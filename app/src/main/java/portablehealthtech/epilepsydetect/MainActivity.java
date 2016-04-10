@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         loginButton = (Button) findViewById(R.id.button);
         usernameEd =(EditText)findViewById(R.id.username);
@@ -29,22 +27,22 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(usernameEd.getText().toString().equals("Oscar") &&
+/*                if(usernameEd.getText().toString().equals("Oscar") &&
 
-                        passwordEd.getText().toString().equals("hot")) {
+                        passwordEd.getText().toString().equals("123")) {
                     Toast.makeText(getApplicationContext(), "Login successful",Toast.LENGTH_SHORT).show();
-
+*/
                     Intent getOverviewActivity = new Intent(MainActivity.this,Overview.class);
                     getOverviewActivity.putExtra("PatientName",usernameEd.getText().toString());
                     startActivity(getOverviewActivity);
                 }
-                else{
+/*                else{
                     Toast.makeText(getApplicationContext(), "Wrong username or password",Toast.LENGTH_SHORT).show();
 
                 }
 
-            }
-        });
+           }
+*/        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package portablehealthtech.epilepsydetect;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,22 +38,9 @@ public class SeizureList extends AppCompatActivity {
         DBHandler db = new DBHandler(this,"Seizure List",null,1);
 
         // Inserting Seizures
-        Log.d("Insert: ", "Inserting ..");
-        db.addSeizure(new Seizure(1234, "4. april 2016", 10.4));
-        db.addSeizure(new Seizure(4321, "6. april 2016", 20.3));
-        db.addSeizure(new Seizure(2222, "8. april 2016", 17.4));
-
-        // Reading all contacts
-        Log.d("Reading: ", "Reading all contacts..");
-        List<Seizure> seizures = db.getAllSeizures();
-
-        for (Seizure sz : seizures) {
-            String log = "Id: "+sz.getSeizure_id()+" ,Date: " + sz.getSeizure_date() + " ,Duration: "
-                    + sz.getSeizure_duration();
-            // Writing Contacts to log
-            Log.d("Name: ", log);
-
-        }
+        db.addSeizure(new Seizure(1234, "04. april 2016", 10.4));
+        db.addSeizure(new Seizure(4321, "06. april 2016", 20.3));
+        db.addSeizure(new Seizure(2222, "08. april 2016", 17.4));
 
         db.getAllSeizures();
 
@@ -70,6 +58,11 @@ public class SeizureList extends AppCompatActivity {
                         ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void backNow(View view) {
+
+        super.onBackPressed();
     }
 
 }

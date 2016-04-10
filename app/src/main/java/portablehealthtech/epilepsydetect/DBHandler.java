@@ -24,8 +24,8 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_SEIZURES + "(" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
-                COLUMN_DATE + " TEXT " + COLUMN_DURATION + " TEXT " + ");";
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_DATE + " TEXT, " + COLUMN_DURATION + " TEXT" + ");";
 
         db.execSQL(query);
     }
@@ -41,7 +41,6 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addSeizure(Seizure seizure){
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, seizure.getSeizure_id());
         values.put(COLUMN_DATE,seizure.getSeizure_date());
         values.put(COLUMN_DURATION, seizure.getSeizure_duration());
 
@@ -53,7 +52,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // Getting All Contacts
     public List<Seizure> getAllSeizures() {
-        List<Seizure> contactList = new ArrayList<>();
+        List<Seizure> seizureList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_SEIZURES;
 
@@ -68,15 +67,23 @@ public class DBHandler extends SQLiteOpenHelper {
                 seizure.setSeizure_date(cursor.getString(1));
                 seizure.setSeizure_duration(cursor.getDouble(2));
 
-                String name = cursor.getString(1) +"\n"+ cursor.getString(2);
+                String name =  "Date: " + cursor.getString(1) + ", Duration: " + cursor.getString(2) + " sec";
                 SeizureList.ArrayofName.add(name);
-                // Adding contact to list
-                contactList.add(seizure);
+                // Adding seizure to list
+                seizureList.add(seizure);
             } while (cursor.moveToNext());
         }
 
-        // return contact list
-        return contactList;
+        // return seizure list
+        return seizureList;
+    }
+
+
+    // Remove all data from database.
+    public void removeAll()
+    {
+        SQLiteDatabase db = this.getWritableDatabase(); // helper is object extends SQLiteOpenHelper
+        db.delete(DBHandler.DATABASE_NAME, null, null);
     }
 
 }

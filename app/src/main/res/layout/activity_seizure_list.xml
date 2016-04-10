@@ -2,9 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-
-    <ListView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listSeizure" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SEIZURE OVERVIEW"
+        android:textColor="#a9070dbf"
+        android:id="@+id/title"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="30dp" />
+
+
+    <ListView
+        android:id="@+id/listSeizure"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title"
+        android:layout_above="@+id/backButton" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:id="@+id/backButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#a9070dbf"
+        android:onClick="backNow"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
+
+
 </RelativeLayout>

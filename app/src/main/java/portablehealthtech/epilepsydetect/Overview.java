@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-public class Overview extends Activity {
+public class Overview extends AppCompatActivity {
 
     private static String patientName ;
     @Override
@@ -18,16 +18,17 @@ public class Overview extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
 
-        patientName = getIntent().getExtras().getString("PatientName");
-
         TextView userText =(TextView)findViewById(R.id.usernameText);
-        userText.setText(patientName);
+
+        if (userText.getText().toString().isEmpty())
+            patientName = getIntent().getExtras().getString("PatientName");
+            userText.setText(patientName);
 
     }
 
     public void seizureList(View view) {
-        Intent getPatientActivity = new Intent(Overview.this,SeizureList.class);
-        startActivity(getPatientActivity);
+        Intent getSeizureActivity = new Intent(this,SeizureList.class);
+        startActivity(getSeizureActivity);
     }
 
 }

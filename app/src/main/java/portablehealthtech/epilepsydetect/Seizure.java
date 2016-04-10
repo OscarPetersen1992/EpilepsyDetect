@@ -14,6 +14,12 @@ public class Seizure extends Activity {
     public Seizure(){}
 
     // constructor
+    public Seizure(String seizuredate, double seizureduration){
+        this.seizure_date = seizuredate;
+        this.seizure_duration = seizureduration;
+    }
+
+    // constructor
     public Seizure(int seizureid, String seizuredate, double seizureduration){
         this.seizure_id = seizureid;
         this.seizure_date = seizuredate;
