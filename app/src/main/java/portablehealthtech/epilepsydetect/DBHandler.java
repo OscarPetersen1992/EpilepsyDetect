@@ -2,9 +2,11 @@ package portablehealthtech.epilepsydetect;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.Cursor;
 import android.content.Context;
 import android.content.ContentValues;
+import android.database.Cursor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -16,7 +18,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_DURATION = "duration";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addSeizure(Seizure seizure){
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID,seizure.getSeizure_id());
+        values.put(COLUMN_ID, seizure.getSeizure_id());
         values.put(COLUMN_DATE,seizure.getSeizure_date());
         values.put(COLUMN_DURATION, seizure.getSeizure_duration());
 
@@ -47,4 +49,34 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_SEIZURES, null, values);
         db.close();
     }
+
+
+    // Getting All Contacts
+    public List<Seizure> getAllSeizures() {
+        List<Seizure> contactList = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_SEIZURES;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Seizure seizure = new Seizure();
+                seizure.setSeizure_id(Integer.parseInt(cursor.getString(0)));
+                seizure.setSeizure_date(cursor.getString(1));
+                seizure.setSeizure_duration(cursor.getDouble(2));
+
+                String name = cursor.getString(1) +"\n"+ cursor.getString(2);
+                SeizureList.ArrayofName.add(name);
+                // Adding contact to list
+                contactList.add(seizure);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return contactList;
+    }
+
 }

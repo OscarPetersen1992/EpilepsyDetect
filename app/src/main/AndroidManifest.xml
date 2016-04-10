@@ -21,7 +21,22 @@
         <activity
             android:name=".Seizure"
             android:label="@string/title_activity_seizure"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Overview"
+            android:label="@string/title_activity_overview"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SeizureList"
+            android:label="@string/title_activity_seizure_list"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

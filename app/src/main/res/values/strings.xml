@@ -2,4 +2,7 @@
     <string name="app_name">EpilepsyDetect</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_seizure">Seizure</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_overview">Overview</string>
+    <string name="title_activity_seizure_list">SeizureList</string>
 </resources>

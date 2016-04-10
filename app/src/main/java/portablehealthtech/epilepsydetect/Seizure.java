@@ -1,15 +1,24 @@
 package portablehealthtech.epilepsydetect;
 
 import java.util.Date;
-
+import android.app.Activity;
 import javax.xml.datatype.Duration;
 
-public class Seizure {
+public class Seizure extends Activity {
 
     private int seizure_id;
     private String seizure_date;
     private double seizure_duration;
 
+    // Empty constructor
+    public Seizure(){}
+
+    // constructor
+    public Seizure(int seizureid, String seizuredate, double seizureduration){
+        this.seizure_id = seizureid;
+        this.seizure_date = seizuredate;
+        this.seizure_duration = seizureduration;
+    }
 
     public int getSeizure_id() {
         return seizure_id;
