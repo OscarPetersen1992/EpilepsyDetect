@@ -5,4 +5,5 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_overview">Overview</string>
     <string name="title_activity_seizure_list">SeizureList</string>
+    <string name="title_activity_handle_eeg">HandleEEG</string>
 </resources>
