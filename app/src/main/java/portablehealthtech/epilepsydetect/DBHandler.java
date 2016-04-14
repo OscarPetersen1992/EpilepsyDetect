@@ -46,6 +46,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_SEIZURES, null, values);
+
         db.close();
     }
 
@@ -55,6 +56,7 @@ public class DBHandler extends SQLiteOpenHelper {
         List<Seizure> seizureList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_SEIZURES;
+
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -74,6 +76,11 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        if (db != null) {
+            db.execSQL("DELETE FROM " + TABLE_SEIZURES);
+            db.close();
+        }
+
         // return seizure list
         return seizureList;
     }
@@ -83,7 +90,32 @@ public class DBHandler extends SQLiteOpenHelper {
     public void removeAll()
     {
         SQLiteDatabase db = this.getWritableDatabase(); // helper is object extends SQLiteOpenHelper
-        db.delete(DBHandler.DATABASE_NAME, null, null);
+        db.delete(TABLE_SEIZURES, null, null);
+        db.close();
+    }
+
+
+
+
+    public String databaseToString(){
+        String dbString = "";
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_SEIZURES + "WHERE 1";
+
+        // Cursor point to location in results
+        /*
+        Cursor cursor = db.rawQuery(query,null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        if (!(cursor.getString(cursor.getColumnIndex("id")) != null)){
+            dbString += cursor.getString(cursor.getColumnIndex("id"));
+            dbString += "\n";
+        }
+        */
+
+        db.close();
+        return dbString;
     }
 
 }

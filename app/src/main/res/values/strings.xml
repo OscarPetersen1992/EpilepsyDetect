@@ -6,4 +6,6 @@
     <string name="title_activity_overview">Overview</string>
     <string name="title_activity_seizure_list">SeizureList</string>
     <string name="title_activity_handle_eeg">HandleEEG</string>
+    <string name="about">About</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
 </resources>

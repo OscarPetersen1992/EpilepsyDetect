@@ -49,4 +49,6 @@ public class Seizure extends Activity {
     public void setSeizure_duration(double seizure_duration) {
         this.seizure_duration = seizure_duration;
     }
+
+
 }

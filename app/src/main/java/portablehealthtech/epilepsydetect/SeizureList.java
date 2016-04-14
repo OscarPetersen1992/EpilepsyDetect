@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,8 @@ import android.widget.Toast;
 
 public class SeizureList extends AppCompatActivity {
 
-    private ListView listView;
     public static ArrayList<String> ArrayofName = new ArrayList<>();
+    DBHandler db = new DBHandler(this,"Seizure List",null,1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +37,26 @@ public class SeizureList extends AppCompatActivity {
 
 
         DBHandler db = new DBHandler(this,"Seizure List",null,1);
-
+        /*
         // Inserting Seizures
+
         db.addSeizure(new Seizure(1234, "04. april 2016", 10.4));
         db.addSeizure(new Seizure(4321, "06. april 2016", 20.3));
         db.addSeizure(new Seizure(2222, "08. april 2016", 17.4));
 
+
+        // db.removeAll();
+        */
         db.getAllSeizures();
 
-        listView = (ListView) findViewById(R.id.listSeizure);
+
+        ListView listView = (ListView) findViewById(R.id.listSeizure);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, ArrayofName);
 
         listView.setAdapter(adapter);
+        listView.setTextFilterEnabled(true);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
