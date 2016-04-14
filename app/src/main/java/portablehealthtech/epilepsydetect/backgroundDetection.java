@@ -61,8 +61,6 @@ public class backgroundDetection extends IntentService {
 
                 String current_date = dateFormat.format(new Date());
                 db.addSeizure(new Seizure(1234, current_date, 10.4));
-                System.out.println(current_date);
-
 
             }
 
