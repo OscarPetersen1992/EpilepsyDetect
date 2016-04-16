@@ -15,6 +15,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.Date;
 import java.text.DateFormat;
 import java.math.*;
+import libsvm.*;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -27,8 +28,20 @@ public class backgroundDetection extends IntentService {
 
     DBHandler db = new DBHandler(this,"Seizure List",null,1);
 
-    private double [][] allEEG;
-    private double [] logsum;
+    private static double [][] allEEG;
+    private static double [] logsum;
+    private static double [] window;
+    private static final double refractoryPeriod= 30.0;
+    private static int numDetail = 4;
+    private static svm_node[] featuresVec = new svm_node[numDetail];
+    public static int[] predictedLabels;
+    private static int firstTempPredictedLabels;
+    private static int secondTempPredictedLabels;
+    private static svm_model svmModel = new svm_model();
+
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //Defining date format
+
 
     public backgroundDetection() {
         super("backgroundDetection");
@@ -43,29 +56,50 @@ public class backgroundDetection extends IntentService {
             e.printStackTrace();
         }
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //Defining date format
+        int numOfWindows = allEEG.length;
+        predictedLabels = new int[numOfWindows];
+
+        int index = 0;
 
         // Detect seizures
-        for(int row = 0; row < allEEG.length; row++) {  // System.out.println(allEEG[0].length); number of columns
+
+        while (index < numOfWindows){
+
+            window = allEEG[index];
+
+            featuresVec = Features.wavelet_logsum(window);
+            firstTempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
+
+            if (firstTempPredictedLabels == 1){
+                index++;
+                featuresVec = Features.wavelet_logsum(window);
+                secondTempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
+
+                if (secondTempPredictedLabels == 1){
+                    predictedLabels[index-1] = firstTempPredictedLabels;
+                    predictedLabels[index] = firstTempPredictedLabels;
+
+              //      while (index < numOfWindows && Features.sum)
+                }
+
+            }
+
+
+
+
+
+
+
+
 
             // Preprocess
 
             // Feature extraction
 
-            logsum=Features.wavelet_logsum(allEEG[row]);
-            System.out.println(Arrays.toString(logsum));
-
 
             // Classification
 
             // Store a seizure
-
-            if (row == 2) {
-
-                String current_date = dateFormat.format(new Date());
-                db.addSeizure(new Seizure(1234, current_date, 10.4));
-
-            }
 
 
         }

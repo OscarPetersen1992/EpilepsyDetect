@@ -8,8 +8,12 @@ import org.apache.commons.math3.transform.TransformType;
 import jwave.Transform;
 import jwave.transforms.FastWaveletTransform;
 import jwave.transforms.wavelets.daubechies.Daubechies4;
+import libsvm.svm_node;
 
 public class Features {
+
+    private static int numDetail = 4;
+    private static svm_node[] features = new svm_node[numDetail];
 
     public static double power_deltaband(double [] input)
     {
@@ -105,8 +109,9 @@ public class Features {
         return result;
     }
 
-    public static double[] wavelet_logsum(double[] window) {
+    public static svm_node[] wavelet_logsum(double[] window) {
         Transform wavelet = new Transform (new FastWaveletTransform( new Daubechies4( ) ) );
+
 
         double[ ] details = wavelet.forward( window );
 
@@ -114,7 +119,6 @@ public class Features {
 
         // Initialize length of detail levels
         int nFeatures =4;
-        double[] features = new double[nFeatures];
         double[] detail1 = new double[window.length/2];
         double[] detail2 = new double[window.length/4];
         double[] detail3 = new double[window.length/8];
@@ -147,10 +151,12 @@ public class Features {
 
         // Calculate the features
         for(int j=0; j<sum_detail.length; j++) {
-            features[j] = Math.log(sum_detail[j]);
-            //svm_node node = new svm_node();
-            //node.index = j+1;
-            //node.value = features[j];
+
+            svm_node node = new svm_node();
+            node.index = j+1;
+            node.value = Math.log(sum_detail[j]);
+
+            features[j] = node;
         }
 
         return features;
