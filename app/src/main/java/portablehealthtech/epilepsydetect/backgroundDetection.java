@@ -31,12 +31,12 @@ public class backgroundDetection extends IntentService {
     private static double [][] allEEG;
     private static double [] logsum;
     private static double [] window;
-    private static final double refractoryPeriod= 30.0;
+    private static final int refractoryPeriod= 30;
     private static int numDetail = 4;
     private static svm_node[] featuresVec = new svm_node[numDetail];
     public static int[] predictedLabels;
     private static int firstTempPredictedLabels;
-    private static int secondTempPredictedLabels;
+    private static int tempPredictedLabels;
     private static svm_model svmModel = new svm_model();
 
 
@@ -63,51 +63,65 @@ public class backgroundDetection extends IntentService {
 
         // Detect seizures
 
-        while (index < numOfWindows){
+        while (index < numOfWindows) {
 
             window = allEEG[index];
 
             featuresVec = Features.wavelet_logsum(window);
             firstTempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
 
-            if (firstTempPredictedLabels == 1){
+            if (firstTempPredictedLabels == 1) {
                 index++;
                 featuresVec = Features.wavelet_logsum(window);
-                secondTempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
+                tempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
 
-                if (secondTempPredictedLabels == 1){
-                    predictedLabels[index-1] = firstTempPredictedLabels;
-                    predictedLabels[index] = firstTempPredictedLabels;
+                if (tempPredictedLabels == 1) {
+                    predictedLabels[index - 1] = firstTempPredictedLabels;
+                    predictedLabels[index] = tempPredictedLabels;
 
-              //      while (index < numOfWindows && Features.sum)
+                    while (index < numOfWindows && (firstTempPredictedLabels + tempPredictedLabels) >= 1) {
+                        if ((firstTempPredictedLabels + tempPredictedLabels) == 1) {
+                            index++;
+                            featuresVec = Features.wavelet_logsum(window);
+                            tempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
+
+                            if (tempPredictedLabels == 1) {
+                                predictedLabels[index - 1] = tempPredictedLabels;
+                                predictedLabels[index] = tempPredictedLabels;
+                            } else {
+                                predictedLabels[index - 1] = tempPredictedLabels;
+                                predictedLabels[index] = tempPredictedLabels;
+                                index = index + refractoryPeriod;
+                            }
+                        } else {
+                            index++;
+                            featuresVec = Features.wavelet_logsum(window);
+                            tempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
+                            predictedLabels[index] = tempPredictedLabels;
+                        }
+                    }
+
+                } else {
+                    predictedLabels[index - 1] = tempPredictedLabels;
+                    predictedLabels[index] = tempPredictedLabels;
                 }
 
+            } else {
+                predictedLabels[index] = firstTempPredictedLabels;
             }
 
-
-
-
-
-
+            index++;
+        }
 
 
 
             // Preprocess
 
-            // Feature extraction
-
-
-            // Classification
-
             // Store a seizure
 
-
-        }
-
-
-
-
     }
+
+
 
     public double[][] load_csv(String path) throws IOException{
         List<Double> EEG = new ArrayList<>();
