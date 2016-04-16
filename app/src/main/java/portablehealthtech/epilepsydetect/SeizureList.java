@@ -36,11 +36,11 @@ public class SeizureList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seizure_list);
 
-        DBHandler db = new DBHandler(this);
+        DBHandler db = new DBHandler(this,"Seizure List",null,1);
 
 
         /*
-        DBHandler db = new DBHandler(this,"Seizure List",null,1);
+
 
         // Inserting Seizures
 

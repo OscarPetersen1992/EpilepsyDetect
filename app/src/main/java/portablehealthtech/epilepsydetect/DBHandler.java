@@ -81,12 +81,12 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        /*
+
         if (db != null) {
             db.execSQL("DELETE FROM " + TABLE_SEIZURES);
             db.close();
         }
-        */
+
 
         // return seizure list
         return seizureList;
