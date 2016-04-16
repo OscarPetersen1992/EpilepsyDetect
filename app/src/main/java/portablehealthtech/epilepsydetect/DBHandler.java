@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.widget.ArrayAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
     // Getting All Contacts
+
     public List<Seizure> getAllSeizures() {
         List<Seizure> seizureList = new ArrayList<>();
         // Select All Query
@@ -61,7 +64,9 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
+
         // looping through all rows and adding to list
+
         if (cursor.moveToFirst()) {
             do {
                 Seizure seizure = new Seizure();
@@ -76,14 +81,17 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        /*
         if (db != null) {
             db.execSQL("DELETE FROM " + TABLE_SEIZURES);
             db.close();
         }
+        */
 
         // return seizure list
         return seizureList;
     }
+
 
 
     // Remove all data from database.

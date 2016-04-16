@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import java.util.Date;
@@ -27,6 +28,7 @@ public class backgroundDetection extends IntentService {
     DBHandler db = new DBHandler(this,"Seizure List",null,1);
 
     private double [][] allEEG;
+    private double [] logsum;
 
     public backgroundDetection() {
         super("backgroundDetection");
@@ -46,12 +48,13 @@ public class backgroundDetection extends IntentService {
         // Detect seizures
         for(int row = 0; row < allEEG.length; row++) {  // System.out.println(allEEG[0].length); number of columns
 
-
-
-
             // Preprocess
 
             // Feature extraction
+
+            logsum=Features.wavelet_logsum(allEEG[row]);
+            System.out.println(Arrays.toString(logsum));
+
 
             // Classification
 
