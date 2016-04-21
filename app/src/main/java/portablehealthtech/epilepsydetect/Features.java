@@ -13,7 +13,7 @@ import libsvm.svm_node;
 public class Features {
 
     private static int numDetail = 4;
-    private static svm_node[] features = new svm_node[numDetail];
+    private static double[] features = new double[numDetail];
 
     public static double power_deltaband(double [] input)
     {
@@ -109,7 +109,7 @@ public class Features {
         return result;
     }
 
-    public static svm_node[] wavelet_logsum(double[] window) {
+    public static double[] wavelet_logsum(double[] window) {
         Transform wavelet = new Transform (new FastWaveletTransform( new Daubechies4( ) ) );
 
 
@@ -151,12 +151,7 @@ public class Features {
 
         // Calculate the features
         for(int j=0; j<sum_detail.length; j++) {
-
-            svm_node node = new svm_node();
-            node.index = j+1;
-            node.value = Math.log(sum_detail[j]);
-
-            features[j] = node;
+            features[j] = Math.log(sum_detail[j]);
         }
 
         return features;
