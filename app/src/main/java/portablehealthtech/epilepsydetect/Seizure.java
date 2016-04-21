@@ -9,21 +9,24 @@ public class Seizure extends Activity {
     private int seizure_id;
     private String seizure_date;
     private double seizure_duration;
+    private double seizure_data;
 
     // Empty constructor
     public Seizure(){}
 
     // constructor
-    public Seizure(String seizuredate, double seizureduration){
+    public Seizure(String seizuredate, double seizureduration, double seizuredata){
         this.seizure_date = seizuredate;
         this.seizure_duration = seizureduration;
+        this.seizure_data = seizuredata;
     }
 
     // constructor
-    public Seizure(int seizureid, String seizuredate, double seizureduration){
+    public Seizure(int seizureid, String seizuredate, double seizureduration, double seizuredata){
         this.seizure_id = seizureid;
         this.seizure_date = seizuredate;
         this.seizure_duration = seizureduration;
+        this.seizure_data = seizuredata;
     }
 
     public int getSeizure_id() {
@@ -49,6 +52,16 @@ public class Seizure extends Activity {
     public void setSeizure_duration(double seizure_duration) {
         this.seizure_duration = seizure_duration;
     }
+
+    public double getSeizure_data() {
+        return seizure_duration;
+    }
+
+    public void setSeizure_data(double seizure_data) {
+        this.seizure_data = seizure_data;
+    }
+
+
 
 
 }
