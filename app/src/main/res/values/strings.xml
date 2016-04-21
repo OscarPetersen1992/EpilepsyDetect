@@ -9,4 +9,5 @@
     <string name="about">About</string>
     <string name="title_activity_statistics">StatisticsActivity</string>
     <string name="title_activity_show_seizure">ShowSeizure</string>
+    <string name="title_activity_about">About</string>
 </resources>

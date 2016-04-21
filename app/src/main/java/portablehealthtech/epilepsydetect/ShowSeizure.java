@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -15,12 +16,18 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class ShowSeizure extends AppCompatActivity {
 
+
+    private static int seizure_id ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_seizure);
 
+        seizure_id = getIntent().getExtras().getInt("seizure_id");
 
+        TextView headerText1 =(TextView)findViewById(R.id.headerText);
+        headerText1.setText(String.valueOf(seizure_id));
         // Load in EEG data
 
 

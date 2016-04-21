@@ -26,7 +26,7 @@ import libsvm.*;
  */
 public class backgroundDetection extends IntentService {
 
-    DBHandler db = new DBHandler(this,"Seizure List",null,1);
+    DBHandler db = new DBHandler(this);// ,"Seizure List",null,1);
 
     private static double [][] allEEG;
     private static double [] logsum;

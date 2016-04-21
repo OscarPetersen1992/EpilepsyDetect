@@ -29,9 +29,10 @@ import android.widget.Toast;
 
 public class SeizureList extends AppCompatActivity {
 
+    public final static String SEIZURE_ID = "seizure_id";
     private ListView listView;
     DBHandler db;
-    public static ArrayList<String> ArrayofName = new ArrayList<>();
+
 
 
     @Override
@@ -39,27 +40,46 @@ public class SeizureList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seizure_list);
 
-        db = new DBHandler(this,"Seizure List",null,1);
+        db = new DBHandler(this); //,"seizures",null,1);
+
+        //db.deleteDatabase(this);
 
 
+        // Inserting Seizures
 
-        final Cursor cursor = db.getAllSeizures1();
+        db.addSeizure(new Seizure("04. april 2016", 10.4, 20));
+
+
+        final Cursor cursor = db.getAllSeizures();
 
         String [] columns = new String[] {
-                DBHandler.COLUMN_ID,
+             //   DBHandler.COLUMN_ID,
                 DBHandler.COLUMN_DATE,
                 DBHandler.COLUMN_DURATION
         };
         int [] widgets = new int[] {
+             //   R.id.idShow,
+                R.id.dateShow,
+                R.id.durationShow
         };
 
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.activity_seizure_list,
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.seizure_info,
                 cursor, columns, widgets, 0);
         listView = (ListView)findViewById(R.id.listSeizure);
         listView.setAdapter(cursorAdapter);
-       // listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView listView, View view,
+                                    int position, long id) {
+                Cursor itemCursor = (Cursor) SeizureList.this.listView.getItemAtPosition(position);
+                int personID = itemCursor.getInt(itemCursor.getColumnIndex(DBHandler.COLUMN_ID));
+                Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
+                intent.putExtra(SEIZURE_ID, personID);
+                startActivity(intent);
+            }
+        });
 
         /*
 
@@ -68,11 +88,6 @@ public class SeizureList extends AppCompatActivity {
         db.addSeizure(new Seizure(1234, "04. april 2016", 10.4));
         db.addSeizure(new Seizure(4321, "06. april 2016", 20.3));
         db.addSeizure(new Seizure(2222, "08. april 2016", 17.4));
-
-
-
-        // db.removeAll();
-
 
 
         db.getAllSeizures();
@@ -94,12 +109,6 @@ public class SeizureList extends AppCompatActivity {
         */
 
 
-
-    }
-
-    public void backNow(View view) {
-
-        super.onBackPressed();
     }
 
 }

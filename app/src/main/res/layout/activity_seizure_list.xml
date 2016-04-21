@@ -20,20 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title"
-        android:layout_above="@+id/backButton" />
+         />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:id="@+id/backButton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#a9070dbf"
-        android:onClick="backNow"
-        android:textStyle="bold"
-        android:textColor="#ffffff"
-        android:textSize="20dp" />
+
 
 
 </RelativeLayout>
