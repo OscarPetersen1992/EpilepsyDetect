@@ -136,10 +136,10 @@ public class backgroundDetection extends IntentService {
         int row = 0;
         while((line = bf.readLine())!=null){
 
-            String[] splited = line.split(",");
+            String[] splitted = line.split(",");
 
-            for (int i= 0; i<splited.length; i++){
-                EEG.add(Double.parseDouble(splited[i])); //get Double from Array (String)
+            for (int i= 0; i<splitted.length; i++){
+                EEG.add(Double.parseDouble(splitted[i])); //get Double from Array (String)
             }
 
             Double[] array1 = new Double[EEG.size()];

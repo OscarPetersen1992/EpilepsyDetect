@@ -53,6 +53,21 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
 
+    public Cursor getSeizure(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery( "SELECT * FROM " + TABLE_SEIZURES + " WHERE " +
+                COLUMN_ID + "=?", new String[] { Integer.toString(id) } );
+        return cursor;
+    }
+
+    public Cursor getAllSeizures1() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery( "SELECT * FROM " + TABLE_SEIZURES, null );
+        return cursor;
+    }
+
+
+
     // Getting All Contacts
 
     public List<Seizure> getAllSeizures() {
@@ -102,28 +117,5 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-
-
-
-    public String databaseToString(){
-        String dbString = "";
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_SEIZURES + "WHERE 1";
-
-        // Cursor point to location in results
-        /*
-        Cursor cursor = db.rawQuery(query,null);
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast())
-        if (!(cursor.getString(cursor.getColumnIndex("id")) != null)){
-            dbString += cursor.getString(cursor.getColumnIndex("id"));
-            dbString += "\n";
-        }
-        */
-
-        db.close();
-        return dbString;
-    }
 
 }

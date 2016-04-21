@@ -35,6 +35,11 @@ public class Overview extends AppCompatActivity {
         startActivity(getSeizureActivity);
     }
 
+    public void aboutClick(View view) {
+        Intent getAboutActivity = new Intent(this,ShowSeizure.class);
+        startActivity(getAboutActivity);
+    }
+
     public void startStopRecord(View view) {
 
         Button startStopRecordButton = (Button)findViewById(R.id.startStopRecordButton);

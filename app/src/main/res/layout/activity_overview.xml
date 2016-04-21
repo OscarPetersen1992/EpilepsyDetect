@@ -41,6 +41,7 @@
         android:layout_marginBottom="30dp"
         android:layout_alignParentEnd="false"
         android:textStyle="bold"
+        android:onClick="aboutClick"
         android:textSize="16sp"
         android:textColor="#ffffff"
         android:background="@drawable/mybutton"/>

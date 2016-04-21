@@ -2,6 +2,7 @@ package portablehealthtech.epilepsydetect;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,12 +23,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SeizureList extends AppCompatActivity {
 
     private ListView listView;
+    DBHandler db;
     public static ArrayList<String> ArrayofName = new ArrayList<>();
 
 
@@ -36,11 +39,29 @@ public class SeizureList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seizure_list);
 
-        DBHandler db = new DBHandler(this,"Seizure List",null,1);
+        db = new DBHandler(this,"Seizure List",null,1);
+
+
+
+        final Cursor cursor = db.getAllSeizures1();
+
+        String [] columns = new String[] {
+                DBHandler.COLUMN_ID,
+                DBHandler.COLUMN_DATE,
+                DBHandler.COLUMN_DURATION
+        };
+        int [] widgets = new int[] {
+        };
+
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.activity_seizure_list,
+                cursor, columns, widgets, 0);
+        listView = (ListView)findViewById(R.id.listSeizure);
+        listView.setAdapter(cursorAdapter);
+       // listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
 
 
         /*
-
 
         // Inserting Seizures
 
@@ -49,7 +70,10 @@ public class SeizureList extends AppCompatActivity {
         db.addSeizure(new Seizure(2222, "08. april 2016", 17.4));
 
 
-        // db.removeAll(); */
+
+        // db.removeAll();
+
+
 
         db.getAllSeizures();
 
@@ -66,6 +90,10 @@ public class SeizureList extends AppCompatActivity {
                         ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        */
+
+
 
     }
 

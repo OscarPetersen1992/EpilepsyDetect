@@ -55,6 +55,10 @@
         <activity
             android:name=".StatisticsActivity"
             android:label="@string/title_activity_statistics"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowSeizure"
+            android:label="@string/title_activity_show_seizure"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
