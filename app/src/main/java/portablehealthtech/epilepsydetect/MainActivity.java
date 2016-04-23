@@ -1,5 +1,6 @@
 package portablehealthtech.epilepsydetect;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.button);
         usernameEd =(EditText)findViewById(R.id.username);
         passwordEd =(EditText)findViewById(R.id.password);
-
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

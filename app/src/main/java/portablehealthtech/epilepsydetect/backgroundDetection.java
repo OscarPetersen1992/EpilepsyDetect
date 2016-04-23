@@ -2,6 +2,7 @@ package portablehealthtech.epilepsydetect;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 
 import java.io.BufferedReader;
@@ -57,13 +58,17 @@ public class backgroundDetection extends IntentService {
             // Load data signal
             allEEG = load_csv(path);
             // Load SVM model
-            /*InputStreamReader svm_file = new InputStreamReader(getAssets().open("svmAndroid.model"));
-
-            File svmFile = new File(getApplicationInfo().sourceDir, "svmAndroid.model");
+            /*
+            File svmFile = new File("resources/svmAndroid.model");
             FileReader svm_file = new FileReader(svmFile);
             BufferedReader bufferedReader = new BufferedReader(svm_file);
             svmModel = svm.svm_load_model(bufferedReader);
             int k = svmModel.l;*/
+            InputStreamReader svm_file = new InputStreamReader(getAssets().open("svmAndroid.model"));
+            BufferedReader bufferedReader = new BufferedReader(svm_file);
+            svmModel = svm.svm_load_model(bufferedReader);
+            int k = svmModel.l;
+            System.out.println(svmModel.param.kernel_type);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,7 +185,7 @@ public class backgroundDetection extends IntentService {
             // Preprocess
 
         // Store a seizure
-
+        /*
         if (index == 2) {
 
             String current_date = dateFormat.format(new Date());
@@ -188,6 +193,7 @@ public class backgroundDetection extends IntentService {
 
 
         }
+        */
 
     }
 
