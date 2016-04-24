@@ -7,9 +7,13 @@ import android.os.Environment;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +22,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.Date;
 import java.text.DateFormat;
 import java.math.*;
+import java.util.logging.FileHandler;
+
 import libsvm.*;
 
 /**
@@ -53,103 +59,69 @@ public class backgroundDetection extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-    String path = "test2.csv";
+    String path = "test1.csv";
         try {
             // Load data signal
-            allEEG = load_csv(path);
+            allEEG = load_csv(path,1792,400);
             // Load SVM model
-            /*
-            File svmFile = new File("resources/svmAndroid.model");
-            FileReader svm_file = new FileReader(svmFile);
-            BufferedReader bufferedReader = new BufferedReader(svm_file);
-            svmModel = svm.svm_load_model(bufferedReader);
-            int k = svmModel.l;*/
             InputStreamReader svm_file = new InputStreamReader(getAssets().open("svmAndroid.model"));
             BufferedReader bufferedReader = new BufferedReader(svm_file);
-            svmModel = svm.svm_load_model(bufferedReader);
+            svmModel = svm.svm_load_model(bufferedReader); // Load from Assets
+            //svmModel = svm.svm_load_model(new BufferedReader(new FileReader(getFilesDir()+"/svmAndroid.model"))); // Load from internal memory
             int k = svmModel.l;
-            System.out.println(svmModel.param.kernel_type);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // Initialize number of windows
         int numOfWindows = allEEG.length;
         predictedLabels = new int[numOfWindows];
-
         int index = 0;
+
         // Detect seizures
         while (index < numOfWindows) {
-
+            int[] buffer = new int[2];
+            int seizure_count = 0;
+            // Get window
             window = allEEG[index];
-
-            wavelets[0] = window[1];
-            wavelets[1] = window[2];
-            wavelets[2] = window[3];
-            wavelets[3] = window[4];
-            shannon = window[0];
-
-            double[] feat_test = new double[5];
-            feat_test[0] = shannon;
-            feat_test[1] = wavelets[0];
-            feat_test[2] = wavelets[1];
-            feat_test[3] = wavelets[2];
-            feat_test[4] = wavelets[3];
-
-            //create svm node
-            for(int j=0; j<numFeat; j++) {
-                svm_node node = new svm_node();
-                if(j==0){
-                    node.index = j+1;
-                    node.value = shannon;
-                }else{
-                    node.index = j+1;
-                    node.value = wavelets[j-1];
-                }
-                featuresVec[j] = node;
-            }
-            /*
+            // Calculate features
             wavelets = Features.wavelet_logsum(window);
             shannon = Features.shannon(window);
-
-            double[] feat_test = new double[5];
-            feat_test[0] = shannon;
-            feat_test[1] = wavelets[0];
-            feat_test[2] = wavelets[1];
-            feat_test[3] = wavelets[2];
-            feat_test[4] = wavelets[3];
-
-            //create svm node
-            for(int j=0; j<numFeat; j++) {
-                svm_node node = new svm_node();
-                if(j==0){
-                    node.index = j+1;
-                    node.value = shannon;
-                }else{
-                    node.index = j+1;
-                    node.value = wavelets[j-1];
-                }
-                featuresVec[j] = node;
-            }
-            */
-
+            // Create svm node
+            featuresVec = get_svm_node(shannon,wavelets);
+            // Classify window
             firstTempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
-            System.out.println(index);
-            System.out.println(Arrays.toString(feat_test));
-            System.out.println(firstTempPredictedLabels);
-/*
+            predictedLabels[index] = firstTempPredictedLabels;
+
             if (firstTempPredictedLabels == 1) {
                 index++;
-                featuresVec = Features.wavelet_logsum(window);
+                // Get window
+                window = allEEG[index];
+                // Calculate features
+                wavelets = Features.wavelet_logsum(window);
+                shannon = Features.shannon(window);
+                // Create svm node
+                featuresVec = get_svm_node(shannon,wavelets);
+                // Classify window
                 tempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
 
                 if (tempPredictedLabels == 1) {
                     predictedLabels[index - 1] = firstTempPredictedLabels;
                     predictedLabels[index] = tempPredictedLabels;
 
-                    while (index < numOfWindows && (firstTempPredictedLabels + tempPredictedLabels) >= 1) {
-                        if ((firstTempPredictedLabels + tempPredictedLabels) == 1) {
+                    buffer[0]=index-1;
+
+                    while (index < numOfWindows && (predictedLabels[index - 1] + predictedLabels[index]) >= 1) {
+                        if ((predictedLabels[index - 1] + predictedLabels[index]) == 1) {
                             index++;
-                            featuresVec = Features.wavelet_logsum(window);
+                            // Get window
+                            window = allEEG[index];
+                            // Calculate features
+                            wavelets = Features.wavelet_logsum(window);
+                            shannon = Features.shannon(window);
+                            // Create svm node
+                            featuresVec = get_svm_node(shannon,wavelets);
+                            // Classify window
                             tempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
 
                             if (tempPredictedLabels == 1) {
@@ -158,11 +130,19 @@ public class backgroundDetection extends IntentService {
                             } else {
                                 predictedLabels[index - 1] = tempPredictedLabels;
                                 predictedLabels[index] = tempPredictedLabels;
+                                buffer[1]=index-2;
                                 index = index + refractoryPeriod;
                             }
                         } else {
                             index++;
-                            featuresVec = Features.wavelet_logsum(window);
+                            // Get window
+                            window = allEEG[index];
+                            // Calculate features
+                            wavelets = Features.wavelet_logsum(window);
+                            shannon = Features.shannon(window);
+                            // Create svm node
+                            featuresVec = get_svm_node(shannon,wavelets);
+                            // Classify window
                             tempPredictedLabels = (int) svm.svm_predict(svmModel, featuresVec);
                             predictedLabels[index] = tempPredictedLabels;
                         }
@@ -176,13 +156,32 @@ public class backgroundDetection extends IntentService {
             } else {
                 predictedLabels[index] = firstTempPredictedLabels;
             }
-            */
 
+            if(buffer[0]>0) {
+                int seizurelength = 2;//buffer[1] - buffer[0];
+                double[] seizureEEG = new double[seizurelength];
+                /*int count = 0;
+                for(int j = buffer[0]; j < seizurelength; j++) {
+                    for (int k = 0; k < allEEG[j].length; k++) {
+                          seizureEEG[k+j*allEEG[j].length] = allEEG[j][k];
+                    }
+                }*/
+                //for (int j = buffer[0]; j < seizurelength; j++) {
+                //    seizureEEG = ArrayUtils.addAll(seizureEEG, allEEG[j]);
+                //}
+
+                //System.out.println(Arrays.toString(seizureEEG));
+                String current_date = dateFormat.format(new Date());
+                db.addSeizure(new Seizure(current_date, seizurelength, Arrays.toString(allEEG[buffer[0]])));
+            }
             index++;
         }
 
-
-            // Preprocess
+        //System.out.println(Arrays.toString(predictedLabels));
+        //for(int j=0; j<predictedLabels.length; j++) {
+        //    System.out.println(predictedLabels[j]);
+        //}
+        // Preprocess
 
         // Store a seizure
         /*
@@ -197,12 +196,25 @@ public class backgroundDetection extends IntentService {
 
     }
 
+    public svm_node[] get_svm_node(double shannon, double[] wavelets) {
+        for(int j=0; j<numFeat; j++) {
+            svm_node node = new svm_node();
+            if(j==0){
+                node.index = j+1;
+                node.value = shannon;
+            }else{
+                node.index = j+1;
+                node.value = wavelets[j-1];
+            }
+            featuresVec[j] = node;
+        }
+        return featuresVec;
+    }
 
-
-    public double[][] load_csv(String path) throws IOException{
+    public double[][] load_csv(String path, int n, int v) throws IOException{
         List<Double> EEG = new ArrayList<>();
         double[] array1d;
-        double[][] array2d = new double[275][5]; //[number of observations][number of samples]
+        double[][] array2d = new double[n][v]; //[number of observations][number of samples]
 
         InputStreamReader is = new InputStreamReader(getAssets().open(path));
 
@@ -233,6 +245,7 @@ public class backgroundDetection extends IntentService {
         return array2d;
 
     }
+
 
 
 
