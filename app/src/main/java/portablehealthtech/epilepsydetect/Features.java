@@ -129,7 +129,7 @@ public class Features {
         double[] sum_detail = new double[nFeatures];
 
 
-        // Get the abs of detail levels
+        // Get the abs of detail levelsasd
 
 
         for(int j=0; j<window.length/2; j++){
