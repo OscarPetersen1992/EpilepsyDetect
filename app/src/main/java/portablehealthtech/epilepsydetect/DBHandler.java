@@ -29,7 +29,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_SEIZURES + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_DATE + " TEXT, " + COLUMN_DURATION + " TEXT" + COLUMN_DATA + " TEXT" + ");";
+                COLUMN_DATE + " TEXT, " + COLUMN_DURATION + " TEXT, " + COLUMN_DATA + " TEXT" + ");";
 
         db.execSQL(query);
     }

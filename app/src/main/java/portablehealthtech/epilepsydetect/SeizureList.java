@@ -40,14 +40,14 @@ public class SeizureList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seizure_list);
 
-        db = new DBHandler(this); //,"seizures",null,1);
+        db = new DBHandler(this);
 
-        //db.deleteDatabase(this);
+      //  db.deleteDatabase(this);
 
 
         // Inserting Seizures
 
-        db.addSeizure(new Seizure("04. april 2016", 10.4, 20));
+      //  db.addSeizure(new Seizure("04. april 2016", 10.4, "0.123123,9.213"));
 
 
         final Cursor cursor = db.getAllSeizures();
@@ -80,34 +80,6 @@ public class SeizureList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        /*
-
-        // Inserting Seizures
-
-        db.addSeizure(new Seizure(1234, "04. april 2016", 10.4));
-        db.addSeizure(new Seizure(4321, "06. april 2016", 20.3));
-        db.addSeizure(new Seizure(2222, "08. april 2016", 17.4));
-
-
-        db.getAllSeizures();
-
-        listView = (ListView) findViewById(R.id.listSeizure);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ArrayofName);
-
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getApplicationContext(),
-                        ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        */
-
 
     }
 
