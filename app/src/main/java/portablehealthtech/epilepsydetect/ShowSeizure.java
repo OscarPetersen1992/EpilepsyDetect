@@ -66,11 +66,14 @@ public class ShowSeizure extends AppCompatActivity {
 
         seizureString = cursor.getString(3); // Column 'data'
 
+        seizureString = seizureString.replaceAll("\\[", "").replaceAll("\\]", "");
+
         cursor.close();
 
         String[] seizureStringSplitted = seizureString.split(",");
 
-        System.out.println(Arrays.toString(seizureStringSplitted));
+        System.out.println(seizureStringSplitted.length);
+
 
         for (int i= 0; i<seizureStringSplitted.length; i++) {
             EEG.add(Double.parseDouble(seizureStringSplitted[i])); //get Double from Array (String)
