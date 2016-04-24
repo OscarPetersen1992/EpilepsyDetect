@@ -5,7 +5,10 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 
+import java.util.Arrays;
+
 import jwave.Transform;
+import jwave.transforms.AncientEgyptianDecomposition;
 import jwave.transforms.FastWaveletTransform;
 import jwave.transforms.wavelets.daubechies.Daubechies4;
 import libsvm.svm_node;
@@ -110,7 +113,7 @@ public class Features {
     }
 
     public static double[] wavelet_logsum(double[] window) {
-        Transform wavelet = new Transform (new FastWaveletTransform( new Daubechies4( ) ) );
+        Transform wavelet = new Transform (new AncientEgyptianDecomposition(new FastWaveletTransform( new Daubechies4( ) ) ));
 
 
         double[ ] details = wavelet.forward( window );
@@ -127,6 +130,7 @@ public class Features {
 
 
         // Get the abs of detail levels
+
 
         for(int j=0; j<window.length/2; j++){
             detail1[j] = details[window.length/2+j];
@@ -148,6 +152,7 @@ public class Features {
             }
 
         }
+
 
         // Calculate the features
         for(int j=0; j<sum_detail.length; j++) {

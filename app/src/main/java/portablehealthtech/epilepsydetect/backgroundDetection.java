@@ -160,12 +160,13 @@ public class backgroundDetection extends IntentService {
             if(buffer[0]>0) {
                 int seizurelength = 2;//buffer[1] - buffer[0];
                 double[] seizureEEG = new double[seizurelength];
-                /*int count = 0;
+                int count = 0;
                 for(int j = buffer[0]; j < seizurelength; j++) {
                     for (int k = 0; k < allEEG[j].length; k++) {
                           seizureEEG[k+j*allEEG[j].length] = allEEG[j][k];
                     }
-                }*/
+                    count++;
+                }
                 //for (int j = buffer[0]; j < seizurelength; j++) {
                 //    seizureEEG = ArrayUtils.addAll(seizureEEG, allEEG[j]);
                 //}
