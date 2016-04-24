@@ -26,11 +26,12 @@ public class ShowSeizure extends AppCompatActivity {
 
     private static int seizureId ;
     private String seizureString;
-    List<Double> EEG = new ArrayList<>();
-    double[] array1d;
-    double maxValue;
-    double minValue;
-    int lengthOfSeizure;
+    private List<Double> EEG = new ArrayList<>();
+    private double[] array1d;
+    private double maxValue;
+    private double minValue;
+    private int lengthOfSeizure;
+    private int fs = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class ShowSeizure extends AppCompatActivity {
         DataPoint[] values = new DataPoint[lengthOfSeizure];
 
         for(int j=0; j<lengthOfSeizure; j++){
-            DataPoint valueTemp = new DataPoint(j,array1d[j]);
+            DataPoint valueTemp = new DataPoint((double)j/fs,array1d[j]);
             values[j]=valueTemp;
         }
 
@@ -82,27 +83,28 @@ public class ShowSeizure extends AppCompatActivity {
         minValue = array1d[0];
         maxValue = array1d[lengthOfSeizure - 1];
 
-        /*
+        // Generate line plot
+        GraphView graphView = (GraphView) findViewById(R.id.graph);
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setScalable(true);
+
         // Manual bounds of x
-        graphView.getViewport().setXAxisBoundsManual(true);
+        //graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMaxX(lengthOfSeizure / fs);
 
         // Manual bounds of y
         graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(minVal);
-        graphView.getViewport().setMaxY(maxVal);
+        graphView.getViewport().setMinY(minValue);
+        graphView.getViewport().setMaxY(maxValue);
 
         // Axis labels
         graphView.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
         graphView.getGridLabelRenderer().setVerticalAxisTitle("Amplitude (\u03BCV)");
-        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        */
+        //graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
-        // Generate line plot
-        GraphView graphView = (GraphView) findViewById(R.id.graph);
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setScalable(true);
+
+
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(values);
         graphView.addSeries(series);
