@@ -20,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Clear database
+        DBHandler db = new DBHandler(this);
+        db.deleteDatabase(this);
+
         loginButton = (Button) findViewById(R.id.button);
         usernameEd =(EditText)findViewById(R.id.username);
         passwordEd =(EditText)findViewById(R.id.password);
@@ -35,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent getOverviewActivity = new Intent(MainActivity.this,Overview.class);
                     getOverviewActivity.putExtra("PatientName",usernameEd.getText().toString());
                     startActivity(getOverviewActivity);
+
+
+
                 }
 /*                else{
                     Toast.makeText(getApplicationContext(), "Wrong username or password",Toast.LENGTH_SHORT).show();

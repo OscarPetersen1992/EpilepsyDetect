@@ -28,6 +28,9 @@ public class ShowSeizure extends AppCompatActivity {
     private String seizureString;
     List<Double> EEG = new ArrayList<>();
     double[] array1d;
+    double maxValue;
+    double minValue;
+    int lengthOfSeizure;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +43,6 @@ public class ShowSeizure extends AppCompatActivity {
         headerText1.setText(String.valueOf(seizureId));
         // Load in EEG data
 
-
-        /*
-        // Manual bounds of x
-        graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(data.length / fs);
-
-        // Manual bounds of y
-        graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(1.1 * minVal);
-        graphView.getViewport().setMaxY(1.1 * maxVal);
-
-        // Axis labels
-        graphView.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
-        graphView.getGridLabelRenderer().setVerticalAxisTitle("Amplitude (\u03BCV)");
-        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        */
 
         DBHandler db = new DBHandler(this);
 
@@ -72,26 +58,46 @@ public class ShowSeizure extends AppCompatActivity {
 
         String[] seizureStringSplitted = seizureString.split(",");
 
-        System.out.println(seizureStringSplitted.length);
+        lengthOfSeizure = seizureStringSplitted.length;
 
-
-        for (int i= 0; i<seizureStringSplitted.length; i++) {
+        for (int i= 0; i<lengthOfSeizure; i++) {
             EEG.add(Double.parseDouble(seizureStringSplitted[i])); //get Double from Array (String)
         }
 
-        Double[] array1 = new Double[EEG.size()];
+        Double[] array1 = new Double[lengthOfSeizure];
         EEG.toArray(array1); // fill the array
 
         array1d = ArrayUtils.toPrimitive(array1); //convert to double from Double
 
         // Convert to class DataPoints for GraphView
-        DataPoint[] values = new DataPoint[array1d.length];
+        DataPoint[] values = new DataPoint[lengthOfSeizure];
 
-        for(int j=0; j<array1d.length; j++){
-            DataPoint vTemp = new DataPoint(j,array1d[j]);
-            values[j]=vTemp;
+        for(int j=0; j<lengthOfSeizure; j++){
+            DataPoint valueTemp = new DataPoint(j,array1d[j]);
+            values[j]=valueTemp;
         }
 
+        // Find maximum and minimum value for plot
+        Arrays.sort(array1d);
+        minValue = array1d[0];
+        maxValue = array1d[lengthOfSeizure - 1];
+
+        /*
+        // Manual bounds of x
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setMinX(0);
+        graphView.getViewport().setMaxX(lengthOfSeizure / fs);
+
+        // Manual bounds of y
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setMinY(minVal);
+        graphView.getViewport().setMaxY(maxVal);
+
+        // Axis labels
+        graphView.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
+        graphView.getGridLabelRenderer().setVerticalAxisTitle("Amplitude (\u03BCV)");
+        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        */
 
         // Generate line plot
         GraphView graphView = (GraphView) findViewById(R.id.graph);
