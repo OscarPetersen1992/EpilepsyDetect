@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:focusable="false"
-    android:focusableInTouchMode="false">
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:background="#355C7D">
+
 
     <Button
         android:layout_width="200dp"
@@ -14,7 +16,7 @@
         android:layout_alignStart="@+id/password"
         android:layout_marginBottom="100dp"
         android:background="@drawable/mybutton"
-        />
+        android:textColor="#ffffff" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,7 +25,7 @@
         android:id="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="71dp"
-        android:textColor="#a9070dbf"
+        android:textColor="#ffffff"
         android:password="false"
         android:textColorHighlight="#000000"
         android:textStyle="bold"
@@ -48,7 +50,11 @@
         android:focusable="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:editable="false" />
+        android:editable="false"
+        android:inputType="textPersonName"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textColorHighlight="#6C5B7B" />
 
     <EditText
         android:layout_width="200dp"
@@ -59,6 +65,9 @@
         android:layout_below="@+id/username"
         android:layout_centerHorizontal="true"
         android:password="true"
-        android:hint="Password"/>
+        android:hint="Password"
+        android:focusable="true"
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

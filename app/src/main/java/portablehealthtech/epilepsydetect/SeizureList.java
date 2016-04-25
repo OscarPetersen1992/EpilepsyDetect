@@ -42,7 +42,7 @@ public class SeizureList extends AppCompatActivity {
 
         db = new DBHandler(this);
 
-      //  db.deleteDatabase(this);
+        //  db.deleteDatabase(this);
 
 
         // Inserting Seizures

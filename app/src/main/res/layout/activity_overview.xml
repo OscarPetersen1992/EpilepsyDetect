@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#355C7D">
 
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/usernameText"
+        android:layout_above="@+id/startStopRecordButton"
+        android:layout_marginBottom="15dp"/>
+    />
     <Button
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Start recording"
+        android:text="Start detection"
         android:id="@+id/startStopRecordButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -51,13 +61,15 @@
         android:layout_height="wrap_content"
         android:text="Absence Detect"
         android:id="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="71dp"
-        android:textColor="#a9070dbf"
+        android:textColor="#ffffff"
         android:password="false"
         android:textColorHighlight="#000000"
         android:textStyle="bold"
-        android:textSize="40dp" />
+        android:textSize="40dp"
+        android:autoText="false"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,7 +89,8 @@
         android:id="@+id/usernameText"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true" />
-    />
+
+
 
 
 </RelativeLayout>

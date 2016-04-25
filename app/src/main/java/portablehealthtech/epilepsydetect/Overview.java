@@ -1,6 +1,7 @@
 package portablehealthtech.epilepsydetect;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,7 +28,6 @@ public class Overview extends AppCompatActivity {
             patientName = getIntent().getExtras().getString("PatientName");
             userText.setText(patientName);
         }
-
     }
 
     public void seizureList(View view) {
@@ -44,21 +44,20 @@ public class Overview extends AppCompatActivity {
 
         Button startStopRecordButton = (Button)findViewById(R.id.startStopRecordButton);
 
-        if (startStopRecordButton.getText().toString().equalsIgnoreCase("Start recording")) {
-            startStopRecordButton.setText("Stop recording");
+        if (startStopRecordButton.getText().toString().equalsIgnoreCase("Start detection")) {
+            startStopRecordButton.setText("Stop detection");
             startStopRecordButton.setTextColor(Color.RED);
 
-        Intent backgroundDetectionActivity = new Intent(this,backgroundDetection.class);
-        this.startService(backgroundDetectionActivity);
-
+            Intent backgroundDetectionActivity = new Intent(this,backgroundDetection.class);
+            this.startService(backgroundDetectionActivity);
 
         }else {
-            startStopRecordButton.setText("Start recording");
+            startStopRecordButton.setText("Start detection");
             startStopRecordButton.setTextColor(Color.parseColor("#ffffff"));
-
             stopService(new Intent(getApplicationContext(), backgroundDetection.class));
         }
-
     }
+
+
 
 }

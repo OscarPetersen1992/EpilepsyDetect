@@ -1,9 +1,11 @@
 package portablehealthtech.epilepsydetect;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +25,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.math.*;
 import java.util.logging.FileHandler;
+import android.os.Handler;
 
 import libsvm.*;
 
@@ -49,12 +52,13 @@ public class backgroundDetection extends IntentService {
     private static svm_node[] featuresVec = new svm_node[numFeat];
     private static double[] wavelets = new double[4];
     private static double shannon;
-
+    Handler mHandler;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //Defining date format
 
 
     public backgroundDetection() {
         super("backgroundDetection");
+        mHandler = new Handler();
     }
 
     @Override
@@ -76,7 +80,7 @@ public class backgroundDetection extends IntentService {
         // Initialize number of windows
         int numOfWindows = allEEG.length;
         predictedLabels = new int[numOfWindows];
-        int index = 0;
+        int index = 280; // HUSK AT ÆNDRE
 
         // Detect seizures
         while (index < numOfWindows) {
@@ -94,6 +98,11 @@ public class backgroundDetection extends IntentService {
             predictedLabels[index] = firstTempPredictedLabels;
 
             if (firstTempPredictedLabels == 1) {
+                try {
+                    Thread.sleep(100,0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 index++;
                 // Get window
                 window = allEEG[index];
@@ -109,10 +118,15 @@ public class backgroundDetection extends IntentService {
                     predictedLabels[index - 1] = firstTempPredictedLabels;
                     predictedLabels[index] = tempPredictedLabels;
 
-                    buffer[0]=index-2; //one window before seizure
+                    buffer[0]=index-4; //3 windows before seizure
 
                     while (index < numOfWindows && (predictedLabels[index - 1] + predictedLabels[index]) >= 1) {
                         if ((predictedLabels[index - 1] + predictedLabels[index]) == 1) {
+                            try {
+                                Thread.sleep(100,0);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             index++;
                             // Get window
                             window = allEEG[index];
@@ -130,10 +144,15 @@ public class backgroundDetection extends IntentService {
                             } else {
                                 predictedLabels[index - 1] = tempPredictedLabels;
                                 predictedLabels[index] = tempPredictedLabels;
-                                buffer[1]=index-1; // one window after seizure
+                                buffer[1]=index+2; // 3 windows after seizure
                                 index = index + refractoryPeriod;
                             }
                         } else {
+                            try {
+                                Thread.sleep(100,0);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             index++;
                             // Get window
                             window = allEEG[index];
@@ -158,7 +177,7 @@ public class backgroundDetection extends IntentService {
             }
 
             if(buffer[0]>0) {
-                int seizurelength = buffer[1] - buffer[0];
+                int seizurelength = (buffer[1] - buffer[0]);
                 double[] seizureEEG = new double[seizurelength*allEEG[buffer[0]].length];
                 int count = 0;
                 //System.out.println(buffer[0]);
@@ -169,16 +188,22 @@ public class backgroundDetection extends IntentService {
                     }
                     count++;
                 }
-                //for (int j = buffer[0]; j < seizurelength; j++) {
-                //    seizureEEG = ArrayUtils.addAll(seizureEEG, allEEG[j]);
-                //}
 
-                //System.out.println(Arrays.toString(seizureEEG));
                 String current_date = dateFormat.format(new Date());
-                db.addSeizure(new Seizure(current_date, seizurelength-2, Arrays.toString(seizureEEG)));
+                db.addSeizure(new Seizure(current_date, seizurelength-7, Arrays.toString(seizureEEG)));
+                mHandler.post(new DisplayToast(this,"Seizure detected! Duration "+(seizurelength-7)+" s"));
+
+
+            }
+            try {
+                Thread.sleep(100,0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             index++;
         }
+
+        mHandler.post(new DisplayToast(this,"Simulation finished!"));
 
         //System.out.println(Arrays.toString(predictedLabels));
         //for(int j=0; j<predictedLabels.length; j++) {
@@ -230,23 +255,39 @@ public class backgroundDetection extends IntentService {
             String[] splitted = line.split(",");
 
             for (int i= 0; i<splitted.length; i++){
-                EEG.add(Double.parseDouble(splitted[i])); //get Double from Array (String)
+                double d = Double.parseDouble(splitted[i]);
+                array2d[row][i] =  d;
+                //EEG.add(d); //get Double from Array (String)
             }
 
-            Double[] array1 = new Double[EEG.size()];
+            /*double[] array1 = new double[EEG.size()];
             EEG.toArray(array1); // fill the array
 
             array1d = ArrayUtils.toPrimitive(array1); //convert to double from Double
 
             for(int col = 0; col < array1d.length; col++) {
                 array2d[row][col] =  array1d[col];
-            }
+            }*/
             row++;
-            EEG.clear();
+            //EEG.clear();
         }
 
         return array2d;
 
+    }
+
+    public class DisplayToast implements Runnable {
+        private final Context mContext;
+        String mText;
+
+        public DisplayToast(Context mContext, String text){
+            this.mContext = mContext;
+            mText = text;
+        }
+
+        public void run(){
+            Toast.makeText(mContext, mText, Toast.LENGTH_LONG).show();
+        }
     }
 
 

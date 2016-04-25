@@ -1,20 +1,29 @@
 package portablehealthtech.epilepsydetect;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button loginButton;
     private EditText usernameEd, passwordEd;
+    //public final String path = "/data/data/"+ getPackageName() +"/files/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +45,12 @@ public class MainActivity extends AppCompatActivity {
                         passwordEd.getText().toString().equals("123")) {
                     Toast.makeText(getApplicationContext(), "Login successful",Toast.LENGTH_SHORT).show();
 */
-                    Intent getOverviewActivity = new Intent(MainActivity.this,Overview.class);
-                    getOverviewActivity.putExtra("PatientName",usernameEd.getText().toString());
-                    startActivity(getOverviewActivity);
+                Intent getOverviewActivity = new Intent(MainActivity.this, Overview.class);
+                getOverviewActivity.putExtra("PatientName", usernameEd.getText().toString());
+                startActivity(getOverviewActivity);
 
 
-
-                }
+            }
 /*                else{
                     Toast.makeText(getApplicationContext(), "Wrong username or password",Toast.LENGTH_SHORT).show();
 
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
            }
 */        });
+
     }
 
     @Override
@@ -57,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+
     }
 
     @Override
@@ -73,4 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

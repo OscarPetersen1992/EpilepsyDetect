@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_vertical_margin"
+        android:textColor="#ffffff"
         />
 
     <TextView
@@ -16,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="@dimen/activity_vertical_margin"
+        android:textColor="#ffffff"
         android:textSize="20dp" />
 
     <TextView
@@ -24,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="@dimen/activity_vertical_margin"
+        android:textColor="#ffffff"
         android:textSize="20dp" />
 
 </LinearLayout>

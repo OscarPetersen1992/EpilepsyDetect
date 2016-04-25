@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#355C7D"
+
     xmlns:app="http://schemas.android.com/apk/libs">
 
 
@@ -15,6 +17,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp" />
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+<!--
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="350dp"
@@ -25,6 +32,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp" />
+        android:layout_marginRight="15dp" />-->
 
 </RelativeLayout>

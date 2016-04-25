@@ -48,7 +48,6 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DATE,seizure.getSeizure_date());
         values.put(COLUMN_DURATION, seizure.getSeizure_duration());
         values.put(COLUMN_DATA, seizure.getSeizure_data());
-
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_SEIZURES, null, values);
 
