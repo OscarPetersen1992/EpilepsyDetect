@@ -1,5 +1,6 @@
 package portablehealthtech.epilepsydetect;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 
 
-public class ShowSeizure extends AppCompatActivity {
+public class ShowSeizure extends Activity {
 
 
     private static int seizureId ;

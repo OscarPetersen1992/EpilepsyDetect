@@ -54,6 +54,7 @@ public class backgroundDetection extends IntentService {
     private static double shannon;
     Handler mHandler;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); //Defining date format
+    private static int truePositive = 1;
 
 
     public backgroundDetection() {
@@ -205,22 +206,6 @@ public class backgroundDetection extends IntentService {
 
         mHandler.post(new DisplayToast(this,"Simulation finished!"));
 
-        //System.out.println(Arrays.toString(predictedLabels));
-        //for(int j=0; j<predictedLabels.length; j++) {
-        //    System.out.println(predictedLabels[j]);
-        //}
-        // Preprocess
-
-        // Store a seizure
-        /*
-        if (index == 2) {
-
-            String current_date = dateFormat.format(new Date());
-            db.addSeizure(new Seizure(1234, current_date, 10.4));
-
-
-        }
-        */
 
     }
 
