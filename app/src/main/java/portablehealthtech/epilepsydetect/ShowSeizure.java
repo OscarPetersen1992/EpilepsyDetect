@@ -1,6 +1,8 @@
 package portablehealthtech.epilepsydetect;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,7 +11,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -41,6 +47,7 @@ public class ShowSeizure extends AppCompatActivity {
     private String seizureString;
     private String seizureDuration;
     private String seizureDate;
+    private String seizureState;
     //private List<Double> EEG = new ArrayList<>();
     private ArrayList<Entry> EEG = new ArrayList<Entry>();
     private double[] array1d;
@@ -56,21 +63,34 @@ public class ShowSeizure extends AppCompatActivity {
 
         seizureId = getIntent().getExtras().getInt("seizure_id");
 
-        TextView headerText1 =(TextView)findViewById(R.id.headerText);
-        headerText1.setText(String.valueOf(seizureId));
-
         // LineChart is initialized from xml
         Utils.init(this);
         LineChart mLineChart = (LineChart) findViewById(R.id.chart);
 
-        DBHandler db = new DBHandler(this);
+        final DBHandler db = new DBHandler(this);
         Cursor cursor = db.getSeizure(seizureId);
         cursor.moveToFirst();
         seizureDate= cursor.getString(1); // Column 'time'
         seizureDuration = cursor.getString(2); // Column 'Duration'
         seizureString = cursor.getString(3); // Column 'data'
+        seizureState = cursor.getString(4); // Column 'Status'
         seizureString = seizureString.replaceAll("\\[", "").replaceAll("\\]", "");
         cursor.close();
+
+        TextView seizureID =(TextView)findViewById(R.id.seizureID);
+        seizureID.setText(String.valueOf(seizureId));
+        TextView seizureDateText =(TextView)findViewById(R.id.seizureDATE);
+        seizureDateText.setText(String.valueOf(seizureDate));
+        TextView seizureDUR =(TextView)findViewById(R.id.seizureDUR);
+        seizureDUR.setText(String.valueOf(seizureDuration));
+        TextView seizureSTATUS =(TextView)findViewById(R.id.seizureSTATUS);
+        if (Integer.parseInt(seizureState)==1){
+            seizureSTATUS.setText("Accepted");
+        }else{
+            seizureSTATUS.setText("Rejected");
+        }
+
+
         String[] seizureStringSplitted = seizureString.split(",");
         lengthOfSeizure = seizureStringSplitted.length;
 
@@ -119,49 +139,64 @@ public class ShowSeizure extends AppCompatActivity {
         mLineChart.invalidate(); // refresh
 
 
-/*
-        Double[] array1 = new Double[lengthOfSeizure];
-        EEG.toArray(array1); // fill    the array
+        ImageButton accept = (ImageButton)findViewById(R.id.acceptButton);
 
-        array1d = ArrayUtils.toPrimitive(array1); //convert to double from Double
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Seizure accepted", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(seizureState)==0){
+                    db.acceptSeizure(seizureId);
+                }
+                if (seizureId - 1 == 0) { //if at end of list
+                    Toast.makeText(getApplicationContext(), "No more seizures", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
+                    intent.putExtra("seizure_id", seizureId);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
+                    intent.putExtra("seizure_id", seizureId - 1);
+                    startActivity(intent);
+                }
+            }
+        });
 
-        // Convert to class DataPoints for GraphView
-        DataPoint[] values = new DataPoint[lengthOfSeizure];
+        ImageButton reject = (ImageButton)findViewById(R.id.rejectButton);
 
-        for(int j=0; j<lengthOfSeizure; j++){
-            DataPoint valueTemp = new DataPoint((double)j/fs,array1d[j]);
-            values[j]=valueTemp;
-        }
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.rejectSeizure(seizureId);
+                Toast.makeText(getApplicationContext(), "Seizure rejected", Toast.LENGTH_SHORT).show();
+                if (seizureId-1==0){ //if at end of list
+                    Toast.makeText(getApplicationContext(), "No more seizures", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
+                    intent.putExtra("seizure_id", seizureId);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
+                    intent.putExtra("seizure_id", seizureId-1);
+                    startActivity(intent);
+                }
+            }
+        });
 
-        // Find maximum and minimum value for plot
-        Arrays.sort(array1d);
-        minValue = array1d[0];
-        maxValue = array1d[lengthOfSeizure - 1];
+        ImageButton list = (ImageButton)findViewById(R.id.listButton);
 
-        // Generate line plot
-        GraphView graphView = (GraphView) findViewById(R.id.graph);
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setScalable(true);
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getSeizureActivity = new Intent(getApplicationContext(),SeizureList.class);
+                startActivity(getSeizureActivity);
+            }
+        });
 
-        // Manual bounds of x
-        //graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(lengthOfSeizure / fs);
 
-        // Manual bounds of y
-        //graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(minValue);
-        graphView.getViewport().setMaxY(maxValue);
 
-        // Axis labels
-        graphView.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
-        graphView.getGridLabelRenderer().setVerticalAxisTitle("Amplitude (\u03BCV)");
-        //graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(values);
-        graphView.addSeries(series);*/
 
     }
+
+
 
 
 }

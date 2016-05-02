@@ -51,7 +51,6 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DATA, seizure.getSeizure_data());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_SEIZURES, null, values);
-
         db.close();
     }
 
@@ -81,6 +80,17 @@ public class DBHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_TRUEPOSITIVE, 0);
+
+        // updating row
+        return db.update(TABLE_SEIZURES, values, COLUMN_ID + " = ?",
+                new String[]{Integer.toString(id)});
+    }
+
+    public int acceptSeizure(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TRUEPOSITIVE, 1);
 
         // updating row
         return db.update(TABLE_SEIZURES, values, COLUMN_ID + " = ?",

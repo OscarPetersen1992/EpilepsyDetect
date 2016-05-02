@@ -11,10 +11,111 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/headerText"
+        android:text="Seizure ID: "
+        android:id="@+id/seizureIDname"
         android:layout_below="@+id/chart"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/seizureID"
+        android:layout_alignTop="@+id/seizureIDname"
+        android:layout_toRightOf="@+id/seizureIDname"
+        android:textColor="#ffffff"
+      />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Date: "
+        android:id="@+id/seizureDATEname"
+        android:layout_below="@+id/seizureIDname"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:textColor="#ffffff"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/seizureDATE"
+        android:layout_below="@+id/seizureIDname"
+        android:layout_toRightOf="@+id/seizureIDname"
+        android:layout_toEndOf="@+id/seizureIDname"
+        android:textColor="#ffffff"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Duration: "
+        android:id="@+id/seizureDURname"
+        android:layout_below="@+id/seizureDATEname"
+        android:layout_marginLeft="15dp"
+        android:textColor="#ffffff"
+        />
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:text="Notes: "
+    android:id="@+id/seizureNOTESname"
+    android:layout_below="@+id/seizureDURname"
+    android:layout_marginLeft="15dp"
+    android:textColor="#ffffff"
+    />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Status: "
+        android:id="@+id/seizureSTATUSname"
+        android:layout_below="@+id/seizureNOTESname"
+        android:layout_marginLeft="15dp"
+        android:textColor="#ffffff"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/seizureNOTES"
+        android:layout_alignTop="@+id/seizureNOTESname"
+        android:layout_alignLeft="@+id/seizureDATE"
+        android:layout_alignStart="@+id/seizureDATE"
+        android:textColor="#ffffff"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/seizureDUR"
+        android:layout_alignTop="@+id/seizureDURname"
+        android:layout_alignLeft="@+id/seizureDATE"
+        android:layout_alignStart="@+id/seizureDATE"
+        android:textColor="#ffffff"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/seizureSTATUS"
+        android:layout_alignTop="@+id/seizureSTATUSname"
+        android:layout_alignLeft="@+id/seizureDATE"
+        android:layout_alignStart="@+id/seizureDATE"
+        android:textColor="#ffffff"/>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
@@ -31,26 +132,41 @@
 
         />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/rejectButton"
+        android:scaleType="fitXY"
         android:background="@drawable/mybutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/AcceptButton"
-        android:layout_marginBottom="65dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/headerText"
-        android:layout_toStartOf="@+id/headerText" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/reject" />
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/acceptButton"
+        android:scaleType="fitXY"
+        android:src="@drawable/accept"
         android:background="@drawable/mybutton"
-        android:layout_height="wrap_content"
-        android:id="@+id/RejectButton"
-        android:layout_alignTop="@+id/AcceptButton"
-        android:layout_toRightOf="@+id/headerText"
-        android:layout_toEndOf="@+id/headerText" />
+        android:adjustViewBounds="true"
+        android:layout_alignTop="@+id/rejectButton"
+        android:layout_toRightOf="@+id/rejectButton"
+        android:layout_toEndOf="@+id/rejectButton" />
+
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/listButton"
+        android:scaleType="fitXY"
+        android:src="@drawable/list"
+        android:background="@drawable/mybutton"
+        android:adjustViewBounds="true"
+        android:layout_alignTop="@+id/acceptButton"
+        android:layout_toLeftOf="@+id/rejectButton"
+        />
 
 
     <!--
