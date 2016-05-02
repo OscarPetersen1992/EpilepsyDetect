@@ -42,14 +42,6 @@ public class SeizureList extends AppCompatActivity {
 
         db = new DBHandler(this);
 
-        //  db.deleteDatabase(this);
-
-
-        // Inserting Seizures
-
-      //  db.addSeizure(new Seizure("04. april 2016", 10.4, "0.123123,9.213"));
-
-
         final Cursor cursor = db.getAllSeizures();
 
         String [] columns = new String[] {
@@ -67,6 +59,8 @@ public class SeizureList extends AppCompatActivity {
                 cursor, columns, widgets, 0);
         listView = (ListView)findViewById(R.id.listSeizure);
         listView.setAdapter(cursorAdapter);
+
+        cursorAdapter.notifyDataSetChanged();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

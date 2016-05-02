@@ -19,6 +19,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_DURATION = "duration";
     public static final String COLUMN_DATA = "data";
+    public static final String COLUMN_TRUEPOSITIVE = "truepositive";
 
 
     public DBHandler(Context context){ //,String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -29,7 +30,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_SEIZURES + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_DATE + " TEXT, " + COLUMN_DURATION + " TEXT, " + COLUMN_DATA + " TEXT" + ");";
+                COLUMN_DATE + " TEXT, " + COLUMN_DURATION + " TEXT, " + COLUMN_DATA + " TEXT, " + COLUMN_TRUEPOSITIVE + " INTEGER DEFAULT 1" +  ");";
 
         db.execSQL(query);
     }
@@ -57,8 +58,15 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Cursor getSeizure(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery( "SELECT * FROM " + TABLE_SEIZURES + " WHERE " +
-                COLUMN_ID + "=?", new String[] { Integer.toString(id) } );
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES + " WHERE " +
+                COLUMN_ID + "=?", new String[]{Integer.toString(id)});
+        return cursor;
+    }
+
+    public Cursor getStats(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES + " WHERE " +
+                COLUMN_DATE + "like" + "AND", new String[]{date});
         return cursor;
     }
 
@@ -66,6 +74,17 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES, null);
         return cursor;
+    }
+
+    public int rejectSeizure(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TRUEPOSITIVE, 0);
+
+        // updating row
+        return db.update(TABLE_SEIZURES, values, COLUMN_ID + " = ?",
+                new String[]{Integer.toString(id)});
     }
 
 
