@@ -44,14 +44,14 @@
     <Button
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:text="@string/about"
-        android:id="@+id/aboutButton"
+        android:text="@string/Statistics"
+        android:id="@+id/statisticsButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:layout_alignParentEnd="false"
         android:textStyle="bold"
-        android:onClick="aboutClick"
+        android:onClick="statisticsClick"
         android:textSize="16sp"
         android:textColor="#ffffff"
         android:background="@drawable/mybutton"/>

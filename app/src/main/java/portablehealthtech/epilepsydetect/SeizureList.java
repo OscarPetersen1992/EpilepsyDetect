@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -56,17 +57,17 @@ public class SeizureList extends AppCompatActivity {
         };
 
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.seizure_info,
-                cursor, columns, widgets, 0);
+                cursor, columns, widgets, 2);
         listView = (ListView)findViewById(R.id.listSeizure);
         listView.setAdapter(cursorAdapter);
 
-        cursorAdapter.notifyDataSetChanged();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView listView, View view,
                                     int position, long id) {
+
                 Cursor itemCursor = (Cursor) SeizureList.this.listView.getItemAtPosition(position);
                 int personID = itemCursor.getInt(itemCursor.getColumnIndex(DBHandler.COLUMN_ID));
                 Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
@@ -75,6 +76,11 @@ public class SeizureList extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void updateClick(View view) {
+        finish();
+        startActivity(getIntent());
     }
 
 }

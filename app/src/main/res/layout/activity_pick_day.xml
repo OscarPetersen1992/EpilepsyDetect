@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:background="#355C7D">
+
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Choose date"
+        android:id="@+id/chooseDate"
+        android:onClick="ChooseDate"
+        android:background="@drawable/mybutton"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:focusable="true"
+        android:enabled="true"
+        android:layout_below="@+id/datePicker"
+        android:layout_centerHorizontal="true" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:id="@+id/datePicker"
+        android:yearListSelectorColor="#ffffff"
+        android:calendarViewShown="false"
+        android:spinnersShown="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:clickable="true"
+        android:contextClickable="true"
+        android:focusableInTouchMode="true"
+        android:layoutMode="clipBounds"
+        android:calendarTextColor="#ffffff" />
+
+
+</RelativeLayout>

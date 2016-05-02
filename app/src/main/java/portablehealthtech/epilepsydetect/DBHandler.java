@@ -65,14 +65,14 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Cursor getStats(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES + " WHERE " +
-                COLUMN_DATE + "like" + "AND", new String[]{date});
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_DATE + " FROM " + TABLE_SEIZURES + " WHERE " +
+                COLUMN_DATE + " LIKE '" + date +"%'", null);
         return cursor;
     }
 
     public Cursor getAllSeizures() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES + " ORDER BY " + COLUMN_DATE + " DESC", null);
         return cursor;
     }
 

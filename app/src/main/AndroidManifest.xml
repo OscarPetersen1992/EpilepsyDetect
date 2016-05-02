@@ -63,6 +63,14 @@
         <activity
             android:name=".About"
             android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BarStats"
+            android:label="@string/title_activity_bar_stats"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PickDay"
+            android:label="@string/title_activity_pick_day"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

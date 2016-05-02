@@ -13,4 +13,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_bar_stats">BarStats</string>
+    <string name="title_activity_pick_day">PickDay</string>
+    <string name="Update">Update</string>
+    <string name="Statistics">Statistics</string>
 </resources>

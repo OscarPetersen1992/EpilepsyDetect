@@ -35,8 +35,8 @@ public class Overview extends AppCompatActivity {
         startActivity(getSeizureActivity);
     }
 
-    public void aboutClick(View view) {
-        Intent getAboutActivity = new Intent(this,About.class);
+    public void statisticsClick(View view) {
+        Intent getAboutActivity = new Intent(this,PickDay.class);
         startActivity(getAboutActivity);
     }
 

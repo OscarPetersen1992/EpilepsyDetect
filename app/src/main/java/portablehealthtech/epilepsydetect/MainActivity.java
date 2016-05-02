@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Clear database
-        DBHandler db = new DBHandler(this);
-        db.deleteDatabase(this);
+        // DBHandler db = new DBHandler(this);
+        //db.deleteDatabase(this);
 
         loginButton = (Button) findViewById(R.id.button);
         usernameEd =(EditText)findViewById(R.id.username);
