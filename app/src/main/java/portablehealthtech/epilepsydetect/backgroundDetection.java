@@ -118,7 +118,7 @@ public class backgroundDetection extends IntentService {
                     predictedLabels[index - 1] = firstTempPredictedLabels;
                     predictedLabels[index] = tempPredictedLabels;
 
-                    buffer[0]=index-4; //3 windows before seizure
+                    buffer[0]=index-3; //2 windows before seizure
 
                     while (index < numOfWindows && (predictedLabels[index - 1] + predictedLabels[index]) >= 1) {
                         if ((predictedLabels[index - 1] + predictedLabels[index]) == 1) {
@@ -144,7 +144,7 @@ public class backgroundDetection extends IntentService {
                             } else {
                                 predictedLabels[index - 1] = tempPredictedLabels;
                                 predictedLabels[index] = tempPredictedLabels;
-                                buffer[1]=index+2; // 3 windows after seizure
+                                buffer[1]=index; // 3 windows after seizure
                                 index = index + refractoryPeriod;
                             }
                         } else {
@@ -177,12 +177,13 @@ public class backgroundDetection extends IntentService {
             }
 
             if(buffer[0]>0) {
-                int seizurelength = (buffer[1] - buffer[0]);
-                double[] seizureEEG = new double[seizurelength*allEEG[buffer[0]].length];
+                int eeglength = (buffer[1] - buffer[0]);
+                int seizurelength = (buffer[1]-1)-(buffer[0]+2)+1;
+                double[] seizureEEG = new double[(eeglength/2+1)*allEEG[buffer[0]].length];
                 int count = 0;
                 //System.out.println(buffer[0]);
 
-                for(int j = buffer[0]; j < buffer[1]; j++) {
+                for(int j = buffer[0]; j <= buffer[1]; j+=2) {
                     for (int k = 0; k < allEEG[j].length; k++) {
                           seizureEEG[k+count*allEEG[j].length] = allEEG[j][k];
                     }
@@ -190,9 +191,8 @@ public class backgroundDetection extends IntentService {
                 }
 
                 String current_date = dateFormat.format(new Date());
-                db.addSeizure(new Seizure(current_date, seizurelength-7, Arrays.toString(seizureEEG)));
-                mHandler.post(new DisplayToast(this,"Seizure detected! Duration "+(seizurelength-7)+" s"));
-
+                db.addSeizure(new Seizure(current_date, seizurelength, Arrays.toString(seizureEEG)));
+                mHandler.post(new DisplayToast(this,"Seizure detected! Duration "+(seizurelength)+" s"));
 
             }
             try {
@@ -205,10 +205,11 @@ public class backgroundDetection extends IntentService {
 
         mHandler.post(new DisplayToast(this,"Simulation finished!"));
 
+
         //System.out.println(Arrays.toString(predictedLabels));
-        //for(int j=0; j<predictedLabels.length; j++) {
-        //    System.out.println(predictedLabels[j]);
-        //}
+        for(int j=0; j<predictedLabels.length; j++) {
+            System.out.println(predictedLabels[j]);
+        }
         // Preprocess
 
         // Store a seizure

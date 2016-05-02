@@ -2,6 +2,7 @@ package portablehealthtech.epilepsydetect;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -32,14 +35,12 @@ import java.util.List;
 
 import com.github.mikephil.charting.utils.Utils;
 
-
-
-
 public class ShowSeizure extends AppCompatActivity {
-
 
     private static int seizureId ;
     private String seizureString;
+    private String seizureDuration;
+    private String seizureDate;
     //private List<Double> EEG = new ArrayList<>();
     private ArrayList<Entry> EEG = new ArrayList<Entry>();
     private double[] array1d;
@@ -63,11 +64,10 @@ public class ShowSeizure extends AppCompatActivity {
         LineChart mLineChart = (LineChart) findViewById(R.id.chart);
 
         DBHandler db = new DBHandler(this);
-
         Cursor cursor = db.getSeizure(seizureId);
-
         cursor.moveToFirst();
-
+        seizureDate= cursor.getString(1); // Column 'time'
+        seizureDuration = cursor.getString(2); // Column 'Duration'
         seizureString = cursor.getString(3); // Column 'data'
         seizureString = seizureString.replaceAll("\\[", "").replaceAll("\\]", "");
         cursor.close();
@@ -77,17 +77,17 @@ public class ShowSeizure extends AppCompatActivity {
         for (int i= 0; i<lengthOfSeizure; i++) {
             double d = Double.parseDouble(seizureStringSplitted[i]);
             Entry eeg = new Entry((float)d,i);
-            EEG.add(eeg); //get Double from Array (String)
+            EEG.add(eeg);
         }
 
         LineDataSet setComp1 = new LineDataSet(EEG, "EEG");
         setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp1.setColor(R.color.colorPrimary);
+        setComp1.setColor(Color.BLACK);
         setComp1.setDrawCircles(false);
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i= 0; i<lengthOfSeizure; i++) {
-            xVals.add(Integer.toString(i/fs));
+            xVals.add(Double.toString(i/fs));
         }
 
         LineData data = new LineData(xVals, setComp1);
@@ -95,7 +95,27 @@ public class ShowSeizure extends AppCompatActivity {
         mLineChart.animateX(2500);
         mLineChart.setDragEnabled(true);
         mLineChart.setScaleXEnabled(true);
+        mLineChart.setScaleYEnabled(true);
         mLineChart.setPinchZoom(true);
+        mLineChart.setBackgroundColor(Color.WHITE);
+        mLineChart.setVerticalScrollBarEnabled(true);
+
+        XAxis xAxis = mLineChart.getXAxis();
+        float start = (1000*2/fs);
+        float end = (lengthOfSeizure-400)/fs;
+        LimitLine lstart = new LimitLine(400, "Seizure start");
+        LimitLine lend = new LimitLine((lengthOfSeizure-200), "Seizure end");
+        lstart.setLineColor(Color.RED);
+        lstart.setLineWidth(4f);
+        lstart.setTextColor(Color.BLACK);
+        lstart.setTextSize(12f);
+        lend.setLineColor(Color.BLUE);
+        lend.setLineWidth(4f);
+        lend.setTextColor(Color.BLACK);
+        lend.setTextSize(12f);
+        xAxis.addLimitLine(lstart);
+        xAxis.addLimitLine(lend);
+
         mLineChart.invalidate(); // refresh
 
 
