@@ -44,6 +44,7 @@ import com.github.mikephil.charting.utils.Utils;
 public class ShowSeizure extends AppCompatActivity {
 
     private static int seizureId ;
+    private static String patientName ;
     private String seizureString;
     private String seizureDuration;
     private String seizureDate;
@@ -62,6 +63,7 @@ public class ShowSeizure extends AppCompatActivity {
         setContentView(R.layout.activity_show_seizure);
 
         seizureId = getIntent().getExtras().getInt("seizure_id");
+        patientName = getIntent().getExtras().getString("PatientName");
 
         // LineChart is initialized from xml
         Utils.init(this);
@@ -186,17 +188,11 @@ public class ShowSeizure extends AppCompatActivity {
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent getSeizureActivity = new Intent(getApplicationContext(),SeizureList.class);
+                Intent getSeizureActivity = new Intent(getApplicationContext(), SeizureList.class);
+                getSeizureActivity.putExtra("PatientName", patientName);
                 startActivity(getSeizureActivity);
             }
         });
 
-
-
-
     }
-
-
-
-
 }

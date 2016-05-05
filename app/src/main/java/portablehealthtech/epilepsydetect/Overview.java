@@ -32,6 +32,7 @@ public class Overview extends AppCompatActivity {
 
     public void seizureList(View view) {
         Intent getSeizureActivity = new Intent(this,SeizureList.class);
+        getSeizureActivity.putExtra("PatientName", patientName);
         startActivity(getSeizureActivity);
     }
 

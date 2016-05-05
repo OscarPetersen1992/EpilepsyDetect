@@ -21,7 +21,7 @@ import java.io.OutputStream;
 public class MainActivity extends AppCompatActivity {
 
     private Button loginButton;
-    private EditText usernameEd, passwordEd;
+    public EditText usernameEd, passwordEd;
     //public final String path = "/data/data/"+ getPackageName() +"/files/";
 
     @Override
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Clear database
-        // DBHandler db = new DBHandler(this);
+        //DBHandler db = new DBHandler(this);
         //db.deleteDatabase(this);
 
         loginButton = (Button) findViewById(R.id.button);

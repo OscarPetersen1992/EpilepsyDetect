@@ -69,6 +69,12 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor getAcceptedSeizures() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES + " WHERE " + COLUMN_TRUEPOSITIVE + "> 0 ORDER BY " + COLUMN_DATE + " DESC", null);
+        return cursor;
+    }
+
     public Cursor getAllSeizures() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES + " ORDER BY " + COLUMN_DATE + " DESC", null);
