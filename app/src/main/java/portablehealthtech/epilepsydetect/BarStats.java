@@ -68,8 +68,6 @@ public class BarStats extends AppCompatActivity {
                 }
             }
 
-            System.out.println(count);
-
             BarEntry hourCount = new BarEntry((float) count, i);
             HourCount.add(hourCount); //get Double from Array (String)
             xVals.add(String.format("%02d", i));

@@ -2,8 +2,11 @@ package portablehealthtech.epilepsydetect;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +19,11 @@ import android.widget.ImageView;
 
 public class Overview extends AppCompatActivity {
 
-    private static String patientName ;
+    public static final String FILENAME = "filename";
+    private static final String PREFUSERNAME = "prefUsername";
+    private static String patientName;
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,21 +31,34 @@ public class Overview extends AppCompatActivity {
 
         TextView userText =(TextView)findViewById(R.id.usernameText);
 
-        if (userText.getText().toString().isEmpty()) {
+        sharedpreferences = getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
+
+        String username = sharedpreferences.getString(PREFUSERNAME, null);
+
+        //if (userText.getText().toString().isEmpty()) {
+        if (username.isEmpty() ) {
             patientName = getIntent().getExtras().getString("PatientName");
             userText.setText(patientName);
+
+            // Storing the username
+            sharedpreferences.edit().putString(PREFUSERNAME,patientName).apply();
+
+        } else {
+            userText.setText(username);
         }
+
+
+
     }
 
     public void seizureList(View view) {
         Intent getSeizureActivity = new Intent(this,SeizureList.class);
-        getSeizureActivity.putExtra("PatientName", patientName);
         startActivity(getSeizureActivity);
     }
 
     public void statisticsClick(View view) {
-        Intent getAboutActivity = new Intent(this,PickDay.class);
-        startActivity(getAboutActivity);
+        Intent getPickDayActivity = new Intent(this,PickDay.class);
+        startActivity(getPickDayActivity);
     }
 
     public void startStopRecord(View view) {

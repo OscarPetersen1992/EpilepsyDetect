@@ -1,7 +1,6 @@
 package portablehealthtech.epilepsydetect;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -33,16 +32,14 @@ public class SeizureList extends AppCompatActivity {
 
     public final static String SEIZURE_ID = "seizure_id";
     private ListView listView;
-    private static String patientName ;
     DBHandler db;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seizure_list);
-
-        patientName = getIntent().getExtras().getString("PatientName");
-
 
         db = new DBHandler(this);
 
@@ -75,30 +72,7 @@ public class SeizureList extends AppCompatActivity {
                 int personID = itemCursor.getInt(itemCursor.getColumnIndex(DBHandler.COLUMN_ID));
                 Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
                 intent.putExtra(SEIZURE_ID, personID);
-                intent.putExtra("PatientName", patientName);
                 startActivity(intent);
-            }
-        });
-
-        listView.setOnTouchListener(new OnSwipeTouchListener() {
-            public boolean onSwipeTop() {
-                Toast.makeText(getApplicationContext(), "top", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            public boolean onSwipeRight() {
-                Toast.makeText(getApplicationContext(), "right", Toast.LENGTH_SHORT).show();
-                Intent getOverviewActivity = new Intent(getApplicationContext(), Overview.class);
-                getOverviewActivity.putExtra("PatientName", patientName);
-                startActivity(getOverviewActivity);
-                return true;
-            }
-            public boolean onSwipeLeft() {
-                Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            public boolean onSwipeBottom() {
-                Toast.makeText(getApplicationContext(), "bottom", Toast.LENGTH_SHORT).show();
-                return false;
             }
         });
 
