@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,6 +34,7 @@ public class SeizureList extends AppCompatActivity {
     public final static String SEIZURE_ID = "seizure_id";
     private ListView listView;
     DBHandler db;
+    private SwipeRefreshLayout newSwipeRefreshLayout;
 
 
 
@@ -41,24 +43,33 @@ public class SeizureList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seizure_list);
 
+        showList();
+
+
+    }
+
+    private void showList(){
+
         db = new DBHandler(this);
+
+        newSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
         final Cursor cursor = db.getAllSeizures();
 
         String [] columns = new String[] {
-             //   DBHandler.COLUMN_ID,
+                //   DBHandler.COLUMN_ID,
                 DBHandler.COLUMN_DATE,
                 DBHandler.COLUMN_DURATION
         };
         int [] widgets = new int[] {
-             //   R.id.idShow,
+                //   R.id.idShow,
                 R.id.dateShow,
                 R.id.durationShow
         };
 
         SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.seizure_info,
                 cursor, columns, widgets, 2);
-        listView = (ListView)findViewById(R.id.listSeizure);
+        listView = (ListView) findViewById(R.id.listSeizure);
         listView.setAdapter(cursorAdapter);
 
 
@@ -76,11 +87,18 @@ public class SeizureList extends AppCompatActivity {
             }
         });
 
+        newSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        // This method performs the actual data-refresh operation.
+
+                        showList();
+                        newSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+
     }
 
-    public void updateClick(View view) {
-        finish();
-        startActivity(getIntent());
-    }
 
 }
