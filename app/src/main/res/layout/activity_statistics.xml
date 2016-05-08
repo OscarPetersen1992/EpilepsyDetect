@@ -1,87 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:background="#355C7D">
 
-    xmlns:app="http://schemas.android.com/tools"
-    android:focusable="false"
-    android:focusableInTouchMode="false">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Statistics"
-        android:id="@+id/textView"
-        android:layout_marginTop="33dp"
-        android:textColor="#a9070dbf"
-        android:password="false"
-        android:textColorHighlight="#000000"
-        android:textStyle="bold"
-        android:textSize="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <com.jjoe64.graphview.GraphView
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chartPie"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        app:seriesType="bar"
-        app:seriesColor="#ee0000"
-        android:id="@+id/graph"
-        android:layout_above="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_height="300dp"
+        android:background="#ffffff"
+        android:layoutMode="clipBounds"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <Button
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Number of seizures:"
-        android:id="@+id/textView3"
-        android:layout_marginRight="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="30dp"
+        android:text="Back to overview"
+        android:id="@+id/backtomain"
+        android:onClick="backToMain"
+        android:background="@drawable/mybutton"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/numSeizuresText"
-        android:layout_toStartOf="@+id/numSeizuresText" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="0"
-        android:id="@+id/numSeizuresText"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView" />
+        android:text="New Text"
+        android:id="@+id/meanText"
+        android:background="@drawable/mybutton"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:padding="10dp"
+        android:layout_below="@+id/chartPie"
+        android:layout_alignLeft="@+id/chartPie"
+        android:layout_alignStart="@+id/chartPie" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/SeizureTotalText"
+        android:background="@drawable/mybutton"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/meanText"
+        android:layout_alignLeft="@+id/meanText"
+        android:layout_alignStart="@+id/meanText"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:text="WEEK"
-        android:id="@+id/button2"
-        android:layout_above="@+id/graph"
-        android:layout_alignLeft="@+id/graph"
-        android:layout_alignStart="@+id/graph"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentBottom="false"
-        android:layout_marginLeft="15dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/AvgSeizPerDayText"
+        android:background="@drawable/mybutton"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:padding="10dp"
+        android:layout_below="@+id/SeizureTotalText"
+        android:layout_alignLeft="@+id/SeizureTotalText"
+        android:layout_alignStart="@+id/SeizureTotalText" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:text="MONTH"
-        android:id="@+id/button3"
-        android:singleLine="true"
-        android:layout_alignTop="@+id/button2"
-        android:layout_alignRight="@+id/graph"
-        android:layout_alignEnd="@+id/graph"
-        android:layout_marginRight="15dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average duration of all seizures"
+        android:id="@+id/textView3"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="#ffffff"
+        android:padding="10dp"
+        android:layout_alignTop="@+id/meanText"
+        android:layout_toRightOf="@+id/meanText"
+        android:layout_toEndOf="@+id/meanText"
+        android:textIsSelectable="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total number of seizures"
+        android:id="@+id/textView6"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="#ffffff"
+        android:padding="10dp"
+        android:textIsSelectable="false"
+        android:layout_above="@+id/textView7"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_toRightOf="@+id/SeizureTotalText"
+        android:layout_toEndOf="@+id/SeizureTotalText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average number of seizures per day"
+        android:id="@+id/textView7"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="#ffffff"
+        android:padding="10dp"
+        android:autoText="true"
+        android:layout_alignBottom="@+id/AvgSeizPerDayText"
+        android:layout_toRightOf="@+id/AvgSeizPerDayText"
+        android:layout_toEndOf="@+id/AvgSeizPerDayText" />
 
 
 </RelativeLayout>

@@ -30,21 +30,19 @@ public class Overview extends AppCompatActivity {
         setContentView(R.layout.activity_overview);
 
         TextView userText =(TextView)findViewById(R.id.usernameText);
+        //sharedpreferences = getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
+        //String username = sharedpreferences.getString(PREFUSERNAME, null);
 
-        sharedpreferences = getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
-
-        String username = sharedpreferences.getString(PREFUSERNAME, null);
-
-        //if (userText.getText().toString().isEmpty()) {
-        if (username.isEmpty() ) {
+        if (userText.getText().toString().isEmpty()) {
+        //if (username.isEmpty() ) {
             patientName = getIntent().getExtras().getString("PatientName");
             userText.setText(patientName);
 
             // Storing the username
-            sharedpreferences.edit().putString(PREFUSERNAME,patientName).apply();
+            //sharedpreferences.edit().putString(PREFUSERNAME,patientName).apply();
 
         } else {
-            userText.setText(username);
+            userText.setText(patientName);
         }
 
 
@@ -53,11 +51,13 @@ public class Overview extends AppCompatActivity {
 
     public void seizureList(View view) {
         Intent getSeizureActivity = new Intent(this,SeizureList.class);
+        getSeizureActivity.putExtra("PatientName", patientName);
         startActivity(getSeizureActivity);
     }
 
     public void statisticsClick(View view) {
         Intent getPickDayActivity = new Intent(this,PickDay.class);
+        getPickDayActivity.putExtra("PatientName", patientName);
         startActivity(getPickDayActivity);
     }
 
@@ -66,7 +66,7 @@ public class Overview extends AppCompatActivity {
         Button startStopRecordButton = (Button)findViewById(R.id.startStopRecordButton);
 
         if (startStopRecordButton.getText().toString().equalsIgnoreCase("Start detection")) {
-            startStopRecordButton.setText("Stop detection");
+            startStopRecordButton.setText("Detecting");
             startStopRecordButton.setTextColor(Color.RED);
 
             Intent backgroundDetectionActivity = new Intent(this,backgroundDetection.class);

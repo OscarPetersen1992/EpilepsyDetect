@@ -21,6 +21,22 @@
         android:layout_alignBottom="@+id/datePicker"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Summary"
+        android:id="@+id/summaryStats"
+        android:onClick="SumStat"
+        android:background="@drawable/mybutton"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:focusable="true"
+        android:enabled="true"
+        android:layout_below="@+id/chooseDate"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true" />
+
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="400dp"

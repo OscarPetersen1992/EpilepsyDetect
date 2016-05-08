@@ -32,6 +32,7 @@ import android.widget.Toast;
 public class SeizureList extends AppCompatActivity {
 
     public final static String SEIZURE_ID = "seizure_id";
+    private static String patientName ;
     private ListView listView;
     DBHandler db;
     private SwipeRefreshLayout newSwipeRefreshLayout;
@@ -42,9 +43,8 @@ public class SeizureList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seizure_list);
-
+        patientName = getIntent().getExtras().getString("PatientName");
         showList();
-
 
     }
 
@@ -83,7 +83,20 @@ public class SeizureList extends AppCompatActivity {
                 int personID = itemCursor.getInt(itemCursor.getColumnIndex(DBHandler.COLUMN_ID));
                 Intent intent = new Intent(getApplicationContext(), ShowSeizure.class);
                 intent.putExtra(SEIZURE_ID, personID);
+                intent.putExtra("PatientName", patientName);
                 startActivity(intent);
+            }
+        });
+
+        listView.setOnTouchListener(new OnSwipeTouchListener() {
+
+            public boolean onSwipeRight() {
+                Toast.makeText(getApplicationContext(), "right", Toast.LENGTH_SHORT).show();
+                Intent getOverviewActivity = new Intent(getApplicationContext(), Overview.class);
+                getOverviewActivity.putExtra("PatientName", patientName);
+                startActivity(getOverviewActivity);
+                return true;
+
             }
         });
 
@@ -92,11 +105,12 @@ public class SeizureList extends AppCompatActivity {
                     @Override
                     public void onRefresh() {
                         // This method performs the actual data-refresh operation.
-
                         showList();
                         newSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
+
+
 
     }
 

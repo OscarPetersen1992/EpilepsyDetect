@@ -20,6 +20,7 @@ import java.util.Calendar;
 public class PickDay extends AppCompatActivity {
 
     private String dateString;
+    private static String patientName ;
 
     DBHandler db = new DBHandler(this);
     Cursor cursor;
@@ -28,6 +29,8 @@ public class PickDay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_day);
+        patientName = getIntent().getExtras().getString("PatientName");
+
 
         Calendar calendar = Calendar.getInstance();
         DatePicker start = (DatePicker) findViewById(R.id.datePicker);
@@ -59,12 +62,21 @@ public class PickDay extends AppCompatActivity {
         if (cursor.getCount() != 0) {
                 Intent barActivity = new Intent(this, BarStats.class);
                 barActivity.putExtra("DateString", dateString);
+                barActivity.putExtra("PatientName", patientName);
                 startActivity(barActivity);
 
         }else {
 
             Toast.makeText(getApplicationContext(), "No seizures detected this day", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void SumStat(View view) {
+
+        Intent statsActivity = new Intent(this, StatisticsActivity.class);
+        statsActivity.putExtra("PatientName", patientName);
+        startActivity(statsActivity);
+
     }
 
     /*

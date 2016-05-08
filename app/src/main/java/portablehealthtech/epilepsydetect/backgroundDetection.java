@@ -205,12 +205,10 @@ public class backgroundDetection extends IntentService {
 
         mHandler.post(new DisplayToast(this,"Simulation finished!"));
 
-
         //System.out.println(Arrays.toString(predictedLabels));
         for(int j=0; j<predictedLabels.length; j++) {
             System.out.println(predictedLabels[j]);
         }
-
     }
 
     public svm_node[] get_svm_node(double shannon, double[] wavelets) {
