@@ -64,7 +64,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Cursor getStats(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_DATE + " FROM " + TABLE_SEIZURES + " WHERE " +
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SEIZURES + " WHERE " +
                 COLUMN_DATE + " LIKE '" + date +"%' AND " + COLUMN_TRUEPOSITIVE + "> 0", null);
         return cursor;
     }

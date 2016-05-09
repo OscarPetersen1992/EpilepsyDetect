@@ -59,13 +59,14 @@ public class BarStats extends AppCompatActivity {
 
         dateString = getIntent().getExtras().getString("DateString");
         patientName = getIntent().getExtras().getString("PatientName");
+        TextView meanDuration =(TextView)findViewById(R.id.meanText);
+        TextView totalSeizure =(TextView)findViewById(R.id.SeizureTotalText);
+        TextView avgSeizPerDayText =(TextView)findViewById(R.id.AvgSeizPerDayText);
 
         DBHandler db = new DBHandler(this);
         /*
 
-        TextView meanDuration =(TextView)findViewById(R.id.meanText);
-        TextView totalSeizure =(TextView)findViewById(R.id.SeizureTotalText);
-        TextView avgSeizPerDayText =(TextView)findViewById(R.id.AvgSeizPerDayText);
+
 
         Cursor seiz = db.getAllAcceptedSeizures();
         int morning = 0;
@@ -125,6 +126,7 @@ public class BarStats extends AppCompatActivity {
         */
 
         Cursor cursor = db.getStats(dateString);
+        int SeizureCount = 0;
 
         for (int i= 0; i<24; i++) {
 
@@ -135,9 +137,16 @@ public class BarStats extends AppCompatActivity {
             while (cursor.moveToNext()) {
 
                 try {
-                    cal.setTime(dateFormat.parse(cursor.getString(0)));
+                    cal.setTime(dateFormat.parse(cursor.getString(1)));
                 } catch (ParseException e) {
                     e.printStackTrace();
+                }
+
+                if (i==0) { //only get these data once
+                    Integer DUR;
+                    DUR = cursor.getInt(2);
+                    SeizureDUR.add(DUR);
+                    SeizureCount++;
                 }
 
                 if (cal.get(Calendar.HOUR_OF_DAY) == i) {
@@ -150,6 +159,44 @@ public class BarStats extends AppCompatActivity {
             xVals.add(String.format("%02d", i));
         }
 
+        Cursor seiz = db.getAllAcceptedSeizures();
+        seiz.moveToLast();
+        try {
+            firstDate = dateFormat.parse(seiz.getString(1)); // first date of detected seizures
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        seiz.moveToFirst();
+        try {
+            LastDate = dateFormat.parse(seiz.getString(1)); //Last date of detected seizures
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Calendar calendar = Calendar.getInstance();
+        int TotalSeizureCount = 0;
+
+        while (seiz.moveToNext()) {
+            try {
+                date = dateFormat.parse(seiz.getString(1)); //date
+                Integer DUR;
+                DUR = seiz.getInt(2);
+                SeizureDUR.add(DUR);
+                TotalSeizureCount++;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        double diff = LastDate.getTime() - firstDate.getTime();
+        double diffDays = diff / (24 * 60 * 60 * 1000);
+        double mean = getAverage();
+        double avgSeizPerDay = round((seiz.getCount() / Math.ceil(diffDays)), 1);
+
+        meanDuration.setText(Double.toString(round(mean, 1)));
+        totalSeizure.setText(Integer.toString(SeizureCount));
+        avgSeizPerDayText.setText(Double.toString(avgSeizPerDay));
 
         BarDataSet setCompHourCount = new BarDataSet(HourCount, "HourCount");
         setCompHourCount.setAxisDependency(YAxis.AxisDependency.LEFT);

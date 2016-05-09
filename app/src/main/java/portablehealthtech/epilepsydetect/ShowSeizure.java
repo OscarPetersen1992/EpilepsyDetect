@@ -97,7 +97,7 @@ public class ShowSeizure extends AppCompatActivity {
         lengthOfSeizure = seizureStringSplitted.length;
 
         for (int i= 0; i<lengthOfSeizure; i++) {
-            double d = Double.parseDouble(seizureStringSplitted[i]);
+            double d = Double.parseDouble(seizureStringSplitted[i])/10;
             Entry eeg = new Entry((float)d,i);
             EEG.add(eeg);
         }
@@ -121,6 +121,9 @@ public class ShowSeizure extends AppCompatActivity {
         mLineChart.setPinchZoom(true);
         mLineChart.setBackgroundColor(Color.WHITE);
         mLineChart.setVerticalScrollBarEnabled(true);
+        mLineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mLineChart.getAxisLeft().setGranularityEnabled(true);
+        mLineChart.getAxisRight().setEnabled(false);
 
         XAxis xAxis = mLineChart.getXAxis();
         float start = (1000*2/fs);
@@ -135,6 +138,7 @@ public class ShowSeizure extends AppCompatActivity {
         lend.setLineWidth(4f);
         lend.setTextColor(Color.BLACK);
         lend.setTextSize(12f);
+        lend.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
         xAxis.addLimitLine(lstart);
         xAxis.addLimitLine(lend);
 

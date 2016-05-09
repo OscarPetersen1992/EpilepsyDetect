@@ -35,15 +35,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Duration"
+        android:text="Duration (s)"
         android:id="@+id/textView5"
         android:textColor="#ffffff"
+        android:layout_marginRight="37dp"
+        android:layout_marginEnd="37dp"
         android:layout_alignTop="@+id/textView4"
         android:layout_alignRight="@+id/title"
-        android:layout_alignEnd="@+id/title"
-        android:layout_marginRight="49dp"
-        android:layout_marginEnd="49dp"
-        />
+        android:layout_alignEnd="@+id/title" />
 
 <android.support.v4.widget.SwipeRefreshLayout
 xmlns:android="http://schemas.android.com/apk/res/android"

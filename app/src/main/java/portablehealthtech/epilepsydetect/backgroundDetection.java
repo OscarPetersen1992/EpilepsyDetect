@@ -61,12 +61,14 @@ public class backgroundDetection extends IntentService {
         mHandler = new Handler();
     }
 
+    int wait = 0;
+
     @Override
     protected void onHandleIntent(Intent intent) {
-    String path = "test1.csv";
+    String path = "pt53.csv";
         try {
             // Load data signal
-            allEEG = load_csv(path,1792,400);
+            allEEG = load_csv(path,1614,400);
             // Load SVM model
             InputStreamReader svm_file = new InputStreamReader(getAssets().open("svmAndroid.model"));
             BufferedReader bufferedReader = new BufferedReader(svm_file);
@@ -80,7 +82,7 @@ public class backgroundDetection extends IntentService {
         // Initialize number of windows
         int numOfWindows = allEEG.length;
         predictedLabels = new int[numOfWindows];
-        int index = 280; // HUSK AT ÆNDRE
+        int index = 0;//280; // HUSK AT ÆNDRE
 
         // Detect seizures
         while (index < numOfWindows) {
@@ -99,7 +101,7 @@ public class backgroundDetection extends IntentService {
 
             if (firstTempPredictedLabels == 1) {
                 try {
-                    Thread.sleep(100,0);
+                    Thread.sleep(wait,0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -123,7 +125,7 @@ public class backgroundDetection extends IntentService {
                     while (index < numOfWindows && (predictedLabels[index - 1] + predictedLabels[index]) >= 1) {
                         if ((predictedLabels[index - 1] + predictedLabels[index]) == 1) {
                             try {
-                                Thread.sleep(100,0);
+                                Thread.sleep(wait,0);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -149,7 +151,7 @@ public class backgroundDetection extends IntentService {
                             }
                         } else {
                             try {
-                                Thread.sleep(100,0);
+                                Thread.sleep(wait,0);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -196,7 +198,7 @@ public class backgroundDetection extends IntentService {
 
             }
             try {
-                Thread.sleep(100,0);
+                Thread.sleep(wait,0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -204,10 +206,16 @@ public class backgroundDetection extends IntentService {
         }
 
         mHandler.post(new DisplayToast(this,"Simulation finished!"));
+        System.out.println(predictedLabels.length);
 
         //System.out.println(Arrays.toString(predictedLabels));
         for(int j=0; j<predictedLabels.length; j++) {
             System.out.println(predictedLabels[j]);
+            try {
+                Thread.sleep(wait,10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

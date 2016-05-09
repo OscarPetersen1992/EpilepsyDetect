@@ -86,7 +86,26 @@ public class StatisticsActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         int SeizureCount = 0;
-
+        try {
+            date = dateFormat.parse(seiz.getString(1)); //date
+            Integer DUR;
+            DUR = seiz.getInt(2);
+            SeizureDUR.add(DUR);
+            SeizureCount++;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(date);
+        int h = calendar.get(Calendar.HOUR_OF_DAY);
+        if (h > 7 && h <= 12) {
+            morning++;
+        } else if (h > 12 && h <= 17) {
+            day++;
+        } else if (h > 17 && h <= 24) {
+            evening++;
+        } else if (h > 0 && h <= 7) {
+            night++;
+        }
 
         while (seiz.moveToNext()) {
             try {
@@ -99,7 +118,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             calendar.setTime(date);
-            int h = calendar.get(Calendar.HOUR_OF_DAY);
+            h = calendar.get(Calendar.HOUR_OF_DAY);
             if (h > 7 && h <= 12) {
                 morning++;
             } else if (h > 12 && h <= 17) {
@@ -151,7 +170,7 @@ public class StatisticsActivity extends AppCompatActivity {
         PieData dataPie = new PieData(xVals, dataSet);
         //dataPie.setValueFormatter(new PercentFormatter());
         dataPie.setValueTextSize(11f);
-        dataPie.setValueTextColor(Color.WHITE);
+        dataPie.setValueTextColor(Color.BLACK);
 
         // configure pie chart
         mPieChart.setUsePercentValues(true);

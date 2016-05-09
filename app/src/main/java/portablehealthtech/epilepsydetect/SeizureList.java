@@ -37,8 +37,6 @@ public class SeizureList extends AppCompatActivity {
     DBHandler db;
     private SwipeRefreshLayout newSwipeRefreshLayout;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +89,6 @@ public class SeizureList extends AppCompatActivity {
         listView.setOnTouchListener(new OnSwipeTouchListener() {
 
             public boolean onSwipeRight() {
-                Toast.makeText(getApplicationContext(), "right", Toast.LENGTH_SHORT).show();
                 Intent getOverviewActivity = new Intent(getApplicationContext(), Overview.class);
                 getOverviewActivity.putExtra("PatientName", patientName);
                 startActivity(getOverviewActivity);
